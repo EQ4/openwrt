@@ -13,3 +13,4 @@ src-svn xorg svn://svn.openwrt.org/openwrt/feeds/xorg
 #src-svn xfce svn://svn.openwrt.org/openwrt/feeds/xfce
 #src-svn lxde svn://svn.openwrt.org/openwrt/feeds/lxde
 #src-link custom /usr/src/openwrt/custom-feed
+src-git alljoyn https://git.allseenalliance.org/gerrit/core/openwrt_feed.git;chaos_calmer 
