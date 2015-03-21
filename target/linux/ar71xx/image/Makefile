@@ -184,7 +184,9 @@ endef
 
 define PatchKernel
 	cp $(KDIR)/vmlinux$(3) $(KDIR_TMP)/vmlinux$(3)-$(1)
+ifneq ($(CONFIG_IMAGE_CMDLINE_HACK),)
 	$(STAGING_DIR_HOST)/bin/patch-cmdline $(KDIR_TMP)/vmlinux$(3)-$(1) "$(strip $(2))"
+endif
 endef
 
 define PatchKernel/initramfs
@@ -198,13 +200,17 @@ endef
 # $(4): name suffix, e.g. "-initramfs".
 define PatchKernelLzma
 	cp $(KDIR)/vmlinux$(4) $(KDIR_TMP)/vmlinux$(4)-$(1)
+ifneq ($(CONFIG_IMAGE_CMDLINE_HACK),)
 	$(STAGING_DIR_HOST)/bin/patch-cmdline $(KDIR_TMP)/vmlinux$(4)-$(1) "$(strip $(2))"
+endif
 	$(call CompressLzma,$(KDIR_TMP)/vmlinux$(4)-$(1),$(KDIR_TMP)/vmlinux$(4)-$(1).bin.lzma,$(3))
 endef
 
 define PatchKernelGzip
 	cp $(KDIR)/vmlinux$(3) $(KDIR_TMP)/vmlinux$(3)-$(1)
+ifneq ($(CONFIG_IMAGE_CMDLINE_HACK),)
 	$(STAGING_DIR_HOST)/bin/patch-cmdline $(KDIR_TMP)/vmlinux$(3)-$(1) "$(strip $(2))"
+endif
 	gzip -9 -c $(KDIR_TMP)/vmlinux$(3)-$(1) > $(KDIR_TMP)/vmlinux$(3)-$(1).bin.gz
 endef
 
@@ -248,6 +254,18 @@ define MkuImageOKLI
 	$(call MkuImage,lzma,-M 0x4f4b4c49,$(KDIR)/vmlinux.bin.lzma,$(KDIR_TMP)/vmlinux-$(1).okli)
 endef
 endif
+
+define Image/Build/LininoLzma
+ $(call MkuImageLzma,$(2),$(3) $(4))
+ $(call Image/Build/Ath,$(1),$(2),$(3),$(4),$(5),$(6),$(7))
+endef
+
+define Image/Build/LininoLzma/initramfs
+ $(call MkuImageLzma/initramfs,$(2),$(3) $(4))
+endef
+
+
+
 
 # $(1): name of the 1st file.
 # $(2): size limit of the 1st file if it is greater than 262144, or
@@ -391,12 +409,13 @@ dlrtdev_mtdlayout=mtdparts=spi0.0:256k(uboot)ro,64k(config)ro,6208k(firmware),64
 dlrtdev_mtdlayout_fat=mtdparts=spi0.0:256k(uboot)ro,64k(config)ro,7168k(firmware),640k(certs),64k(caldata)ro,64k@0x660000(caldata_orig),6208k@0x50000(firmware_orig)
 dragino2_mtdlayout=mtdparts=spi0.0:256k(u-boot)ro,16000k(firmware),64k(config)ro,64k(art)ro
 hiwifi_hc6361_mtdlayout=mtdparts=spi0.0:64k(u-boot)ro,64k(bdinfo)ro,1280k(kernel),14848k(rootfs),64k(backup)ro,64k(art)ro,16128k@0x20000(firmware)
+linino_mtdlayout_16M=mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env),14656k(rootfs),1280k(kernel),64k(nvram),64k(art),15936k@0x50000(firmware)
 pb92_mtdlayout=mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env)ro,2752k(rootfs),896k(kernel),64k(nvram),64k(art)ro,3648k@0x50000(firmware)
 planex_mtdlayout=mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env)ro,7744k(firmware),128k(art)ro
 ubntxm_mtdlayout=mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env)ro,7552k(firmware),256k(cfg)ro,64k(EEPROM)ro
 uap_pro_mtdlayout=mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env)ro,1536k(kernel),14208k(rootfs),256k(cfg)ro,64k(EEPROM)ro,15744k@0x50000(firmware)
 ubdev_mtdlayout=mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env)ro,7488k(firmware),64k(certs),256k(cfg)ro,64k(EEPROM)ro
-whrhpg300n_mtdlayout=mtdparts=spi0.0:248k(u-boot)ro,8k(u-boot-env)ro,3712k(firmware),64k(art)ro
+whrhpg301n_mtdlayout=mtdparts=spi0.0:248k(u-boot)ro,8k(u-boot-env)ro,3712k(firmware),64k(art)ro
 wlr8100_mtdlayout=mtdparts=spi0.0:192k(u-boot)ro,64k(u-boot-env)ro,1408k(kernel),14080k(rootfs),192k(unknown)ro,64k(art)ro,384k(unknown2)ro,15488k@0x40000(firmware)
 wpj558_mtdlayout_16M=mtdparts=spi0.0:192k(u-boot)ro,16128k(firmware),64k(art)ro
 wndap360_mtdlayout=mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env)ro,1728k(kernel),6016k(rootfs),64k(nvram)ro,64k(art)ro,7744k@0x50000(firmware)
@@ -1241,6 +1260,12 @@ $(eval $(call BuildTemplate,all,,64k 128k 256k))
 ifeq ($(SUBTARGET),generic)
 $(eval $(call SingleProfile,ALFA,64k,ALFANX,alfa-nx,ALFA-NX,ttyS0,115200,$$(alfa_mtdlayout_8M),1638400,6291456,vmlinux.gz.uImage,pb9x-2.6.31-jffs2))
 $(eval $(call SingleProfile,ALFA,64k,HORNETUB,hornet-ub,HORNET-UB,ttyATH0,115200,$$(alfa_mtdlayout_8M),1638400,6291456,kernel_image,rootfs_image))
+
+$(eval $(call SingleProfile,AthLzma,64k,LININO_YUN,linino-yun,linino-yun,ttySPI0,250000,$$(linino_mtdlayout_16M),RKuImage))
+$(eval $(call SingleProfile,AthLzma,64k,LININO_ONE,linino-one,linino-one,ttySPI0,250000,$$(linino_mtdlayout_16M),RKuImage))
+$(eval $(call SingleProfile,AthLzma,64k,LININO_FREEDOG,linino-freedog,linino-freedog,ttySPI0,250000,$$(linino_mtdlayout_16M),RKuImage))
+$(eval $(call SingleProfile,AthLzma,64k,LININO_CHIWAWA,linino-chiwawa,linino-chiwawa,ttyATH0,115200,$$(linino_mtdlayout_16M),RKuImage))
+
 $(eval $(call SingleProfile,ALFA,64k,TUBE2H8M,tube2h-8M,TUBE2H,ttyATH0,115200,$$(alfa_mtdlayout_8M),1638400,6291456,kernel.image,rootfs.image))
 
 $(eval $(call SingleProfile,AthGzip,64k,AP81,ap81,AP81,ttyS0,115200,$$(ap81_mtdlayout),RKuImage))
@@ -1476,6 +1501,9 @@ $(eval $(call MultiProfile,AP121,AP121_2M AP121_4M))
 $(eval $(call MultiProfile,AP136,AP136_010 AP136_020))
 $(eval $(call MultiProfile,ARCHERC7, ARCHERC5 ARCHERC7V1 ARCHERC7V2))
 $(eval $(call MultiProfile,EWDORIN, EWDORINAP EWDORINRT EWDORIN16M))
+
+$(eval $(call MultiProfile,LININO, LININO_YUN LININO_ONE LININO_FREEDOG LININO_CHIWAWA))
+
 $(eval $(call MultiProfile,OPENMESH,OM2P OM5P MR600 MR900))
 $(eval $(call MultiProfile,GLINET,GLINET6408A GLINET6416A))
 $(eval $(call MultiProfile,TEW652BRP,TEW652BRP_FW TEW652BRP_RECOVERY))

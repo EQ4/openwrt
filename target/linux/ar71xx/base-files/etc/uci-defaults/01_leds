@@ -171,6 +171,13 @@ hornet-ub)
 	ucidef_set_led_usbdev "usb" "USB" "alfa:blue:usb" "1-1"
 	;;
 
+	linino-yun|\
+	linino-freedog|\
+	linino-one)
+		ucidef_set_led_wlan "wlan" "WLAN" "wlan" "phy0tpt"
+		ucidef_set_led_usbdev "usb" "USB" "usb" "1-1"
+	;;
+
 mc-mac1200r)
 	ucidef_set_led_wlan "wlan2g" "WLAN2G" "mercury:green:wlan2g" "phy1tpt"
 	ucidef_set_led_wlan "wlan5g" "WLAN5G" "mercury:green:wlan5g" "phy0tpt"
@@ -220,8 +227,8 @@ nbg6716)
 	ucidef_set_led_netdev "wan" "WAN" "zyxel:white:internet" "eth1"
 	ucidef_set_led_wlan "wlan" "WLAN" "zyxel:white:wifi2g" "phy1tpt"
 	ucidef_set_led_wlan "wlan5" "WLAN5" "zyxel:white:wifi5g" "phy0tpt"
-	ucidef_set_led_usbdev "usb1" "USB1" "zyxel:white:usb1" "2-1"
-	ucidef_set_led_usbdev "usb2" "USB2" "zyxel:white:usb2" "1-1"
+	ucidef_set_led_usbdev "usb1" "USB1" "zyxel:white:usb0" "1-1"
+	ucidef_set_led_usbdev "usb2" "USB2" "zyxel:white:usb1" "2-1"
 	;;
 
 om2p | \

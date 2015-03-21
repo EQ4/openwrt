@@ -1,0 +1,12 @@
+--- a/build/all.gyp	2015-02-06 21:04:23.000000000 +0100
++++ b/build/all.gyp_p	2015-02-09 21:11:48.276688370 +0100
+@@ -10,9 +10,6 @@
+       'dependencies': [
+         '../samples/samples.gyp:*',
+         '../src/d8.gyp:d8',
+-        '../test/base-unittests/base-unittests.gyp:*',
+-        '../test/cctest/cctest.gyp:*',
+-        '../test/compiler-unittests/compiler-unittests.gyp:*',
+       ],
+       'conditions': [
+         ['component!="shared_library"', {

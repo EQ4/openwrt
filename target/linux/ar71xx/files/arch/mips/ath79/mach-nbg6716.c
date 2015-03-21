@@ -44,16 +44,16 @@
 
 #define NBG6716_GPIO_LED_INTERNET	18
 #define NBG6716_GPIO_LED_POWER		15
+#define NBG6716_GPIO_LED_USB0		13
 #define NBG6716_GPIO_LED_USB1		4
-#define NBG6716_GPIO_LED_USB2		13
 #define NBG6716_GPIO_LED_WIFI2G		19
 #define NBG6716_GPIO_LED_WIFI5G		17
 #define NBG6716_GPIO_LED_WPS		21
 
 #define NBG6716_GPIO_BTN_RESET		23
 #define NBG6716_GPIO_BTN_RFKILL		1
+#define NBG6716_GPIO_BTN_USB0		14
 #define NBG6716_GPIO_BTN_USB1		0
-#define NBG6716_GPIO_BTN_USB2		14
 #define NBG6716_GPIO_BTN_WPS		22
 
 #define NBG6716_GPIO_USB_POWER		16
@@ -78,13 +78,13 @@ static struct gpio_led nbg6716_leds_gpio[] __initdata = {
 		.active_low	= 1,
 	},
 	{
-		.name		= "zyxel:white:usb1",
-		.gpio		= NBG6716_GPIO_LED_USB1,
+		.name		= "zyxel:white:usb0",
+		.gpio		= NBG6716_GPIO_LED_USB0,
 		.active_low	= 1,
 	},
 	{
-		.name		= "zyxel:white:usb2",
-		.gpio		= NBG6716_GPIO_LED_USB2,
+		.name		= "zyxel:white:usb1",
+		.gpio		= NBG6716_GPIO_LED_USB1,
 		.active_low	= 1,
 	},
 	{
@@ -122,19 +122,19 @@ static struct gpio_keys_button nbg6716_gpio_keys[] __initdata = {
 		.active_low	= 0,
 	},
 	{
+		.desc		= "USB0 eject button",
+		.type		= EV_KEY,
+		.code		= BTN_0,
+		.debounce_interval = NBG6716_KEYS_DEBOUNCE_INTERVAL,
+		.gpio		= NBG6716_GPIO_BTN_USB0,
+		.active_low	= 1,
+	},
+	{
 		.desc		= "USB1 eject button",
 		.type		= EV_KEY,
 		.code		= BTN_1,
 		.debounce_interval = NBG6716_KEYS_DEBOUNCE_INTERVAL,
 		.gpio		= NBG6716_GPIO_BTN_USB1,
-		.active_low	= 1,
-	},
-	{
-		.desc		= "USB2 eject button",
-		.type		= EV_KEY,
-		.code		= BTN_2,
-		.debounce_interval = NBG6716_KEYS_DEBOUNCE_INTERVAL,
-		.gpio		= NBG6716_GPIO_BTN_USB2,
 		.active_low	= 1,
 	},
 	{

@@ -1,0 +1,43 @@
+diff --git a/configure b/configure
+index 66cb312..663f002 100755
+--- a/configure
++++ b/configure
+@@ -232,6 +232,12 @@ parser.add_option('--with-arm-float-abi',
+     help='specifies which floating-point ABI to use. Valid values are: '
+          'soft, softfp, hard')
+ 
++parser.add_option("--with-mips-float-abi",
++    action="store",
++    dest="mips_float_abi",
++    help="Specifies which floating-point ABI to use. Valid values are: "
++         "soft, hard")
++
+ parser.add_option('--with-dtrace',
+     action='store_true',
+     dest='with_dtrace',
+@@ -482,6 +488,15 @@ def compiler_version():
+   return (version, is_clang)
+ 
+ 
++def configure_mips(o):
++  if options.mips_float_abi:
++    if options.mips_float_abi in ('soft', 'hard'):
++      o['variables']['v8_use_mips_abi_hardfloat'] = b(
++          options.mips_float_abi == 'hard')
++    else:
++      raise Exception(
++          'Invalid mips-float-abi value. Valid values are: soft, hard')
++
+ def configure_arm(o):
+   if options.arm_float_abi:
+     arm_float_abi = options.arm_float_abi
+@@ -522,6 +537,8 @@ def configure_node(o):
+ 
+   if target_arch == 'arm':
+     configure_arm(o)
++  elif target_arch in ('mips', 'mipsel'):
++    configure_mips(o)
+ 
+   cc_version, is_clang = compiler_version()
+   o['variables']['clang'] = 1 if is_clang else 0
+   
