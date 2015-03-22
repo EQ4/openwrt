@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=node
 PKG_VERSION:=v0.10.25
-PKG_RELEASE:=3
+PKG_RELEASE:=9
 
 PKG_SOURCE:=node-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://nodejs.org/dist/${PKG_VERSION}
@@ -18,6 +18,8 @@ PKG_MD5SUM:=153bdbf77b4473df2600b8ce123ef331
 PKG_BUILD_PARALLEL:=3
 PKG_BUILD_DEPENDS:=v8m-rb
 PKG_V8_VERSION:=3.14.5
+
+PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -31,7 +33,7 @@ define Package/node
 endef
 
 define Package/node/description
- Node.js is a platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.
+	Node.js is a platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.
 endef
 
 define Build/Configure
@@ -45,7 +47,7 @@ define Build/Configure
 	PATH="/usr/bin/:$(PATH)" \
 	GYPFLAGS="-Dv8_use_mips_abi_hardfloat=false -Dv8_can_use_fpu_instructions=false" \
 	LDFLAGS="-L$(TOOLCHAIN_DIR)/lib/ -Wl,-rpath-link $(TOOLCHAIN_DIR)/lib/" \
-	./configure --without-snapshot --without-npm --shared-v8 --shared-v8-includes="$(STAGING_DIR)/usr/include/" --shared-v8-libpath="$(STAGING_DIR)/usr/lib" --dest-cpu=mips --dest-os=linux --with-mips-float-abi=soft; \
+	./configure --prefix=/usr --without-snapshot --shared-v8 --without-npm --shared-v8-includes="$(STAGING_DIR)/usr/include/" --shared-v8-libpath="$(STAGING_DIR)/usr/lib" --dest-cpu=mips --dest-os=linux --with-mips-float-abi=soft; \
 	);
 endef
 
@@ -65,7 +67,7 @@ endef
 define Package/node/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	
-	$(CP) $(PKG_BUILD_DIR)/out/Release/node $(1)/usr/bin/
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/node $(1)/usr/bin
 endef
 
 $(eval $(call BuildPackage,node))

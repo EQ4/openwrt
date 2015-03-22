@@ -16,6 +16,7 @@
 /package/openwrt-packages
 *.orig
 *.rej
+*.sh
 *~
 .#*
 *#
