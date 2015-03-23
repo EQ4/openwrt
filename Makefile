@@ -52,6 +52,10 @@ prepare: $(target/stamp-compile)
 clean: FORCE
 	rm -rf $(BUILD_DIR) $(BIN_DIR) $(BUILD_LOG_DIR)
 
+imageclean: FORCE
+	$(_SINGLE)$(SUBMAKE) target/linux/clean V=99
+	rm -rf $(TMP_DIR) $(BIN_DIR)/{*.bin,*.gz,*.lzma,*.elf,md5sums,*squashfs*}
+
 dirclean: clean
 	rm -rf $(STAGING_DIR) $(STAGING_DIR_HOST) $(STAGING_DIR_TOOLCHAIN) $(TOOLCHAIN_DIR) $(BUILD_DIR_HOST) $(BUILD_DIR_TOOLCHAIN)
 	rm -rf $(TMP_DIR)
@@ -100,6 +104,6 @@ package/symlinks-install:
 package/symlinks-clean:
 	$(SCRIPT_DIR)/feeds uninstall -a
 
-.PHONY: clean dirclean prereq prepare world package/symlinks package/symlinks-install package/symlinks-clean
+.PHONY: clean imageclean dirclean prereq prepare world package/symlinks package/symlinks-install package/symlinks-clean
 
 endif
