@@ -38,7 +38,7 @@ $(call Package/bluez/Default)
   SECTION:=libs
   CATEGORY:=Libraries
   TITLE:=Bluetooth libraries
-  DEPENDS:=+libpthread +libreadline +libncurses +libusb +glib2 +dbus +udev $(INTL_DEPENDS) $(ICONV_DEPENDS)
+  DEPENDS:=+libpthread +libreadline +libncurses +libusb-1.0 +glib2 +dbus +udev $(INTL_DEPENDS) $(ICONV_DEPENDS)
 endef
 
 define Package/bluez-utils/conffiles
