@@ -30,11 +30,20 @@ brcm63xx_dt_detect() {
 	"Broadcom 96348R reference board")
 		board_name="bcm96348r"
 		;;
+	"Broadcom BCM96318REF reference board")
+		board_name="bcm96318ref"
+		;;
+	"Broadcom BCM96318REF_P300 reference board")
+		board_name="bcm96318ref_p300"
+		;;
+	"Broadcom BCM963268BU_P300 reference board")
+		board_name="bcm963268bu_p300"
+		;;
 	"Broadcom bcm963281TAN reference board")
 		board_name="bcm963281tan"
 		;;
 	"Broadcom BCM96328avng reference board")
-		board_name="bcm6328avng"
+		board_name="bcm96328avng"
 		;;
 	"Broadcom BCM96345GW2 reference board")
 		board_name="bcm96345gw2"
@@ -60,8 +69,14 @@ brcm63xx_dt_detect() {
 	"Broadcom BCM96368MVWG reference board")
 		board_name="bcm96368mvwg"
 		;;
+	"BT Home Hub 2.0 Type A")
+		board_name="homehub2a"
+		;;
+	"BT Voyager 2110")
+		board_name="v2110"
+		;;
 	"BT Voyager V2500V")
-		board_name="v2500v"
+		board_name="v2500v_bb"
 		;;
 	"Comtrend AR-5381u")
 		board_name="ar-5381u"
@@ -93,6 +108,9 @@ brcm63xx_dt_detect() {
 	"D-Link DSL-2640B rev B2")
 		board_name="dsl-2640b-b"
 		;;
+	"D-Link DSL-2640U/BRU/C")
+		board_name="dsl-2640u"
+		;;
 	"D-Link DSL-2650U")
 		board_name="dsl-2650u"
 		;;
@@ -102,8 +120,17 @@ brcm63xx_dt_detect() {
 	"D-Link DSL-2740B/DSL-2741B rev F1")
 		board_name="dsl-274xb-f"
 		;;
+	"D-Link DSL-2750B/DSL-2751 rev D1")
+		board_name="dsl-275xb-d"
+		;;
 	"D-Link DVA-G3810BN/TL")
 		board_name="dva-g3810bn"
+		;;
+	"Dynalink RTA770BW")
+		board_name="rta770bw"
+		;;
+	"Dynalink RTA770W")
+		board_name="rta770w"
 		;;
 	"Dynalink RTA1025W")
 		board_name="rta1025w"
@@ -126,6 +153,9 @@ brcm63xx_dt_detect() {
 	"Huawei EchoLife HG556a (version C)")
 		board_name="hg556a_c"
 		;;
+	"Inteno VG50")
+		board_name="vg50"
+		;;
 	"Inventel Livebox 1")
 		board_name="livebox1"
 		;;
@@ -134,6 +164,9 @@ brcm63xx_dt_detect() {
 		;;
 	"Netgear DG834GT/PN")
 		board_name="dg834gt"
+		;;
+	"Netgear DG834G v4")
+		board_name="dg834g_v4"
 		;;
 	"Netgear DGND3700v1/DGND3800B")
 		board_name="dgnd3700v1_dgnd3800b"
@@ -180,8 +213,14 @@ brcm63xx_dt_detect() {
 	"TECOM GW6200")
 		board_name="g6200"
 		;;
+	"Telsey CVPA502+")
+		board_name="cpva502p"
+		;;
 	"Telsey CPVA642-type (CPA-ZNTE60T)")
 		board_name="cpva642"
+		;;
+	"Telsey MAGIC")
+		board_name="magic"
 		;;
 	"TP-Link TD-W8900GB")
 		board_name="td-w8900gb"
@@ -204,36 +243,6 @@ brcm63xx_legacy_detect() {
 	local board_name
 
 	case "$1" in
-	963268BU_P300)
-		board_name="bcm963268bu_p300"
-		;;
-	96338W2_E7T)
-		board_name="dsl-2640u"
-		;;
-	96348W3)
-		board_name="dg834g_v4"
-		;;
-	CPVA502+)
-		board_name="cpva502p"
-		;;
-	MAGIC)
-		board_name="magic"
-		;;
-	RTA770BW)
-		board_name="rta770bw"
-		;;
-	RTA770W)
-		board_name="rta770w"
-		;;
-	V2110)
-		board_name="v2110"
-		;;
-	V2500V_BB)
-		board_name="v2500v_bb"
-		;;
-	VW6339GU)
-		board_namge="vg50"
-		;;
 	*)
 		board_name="unknown"
 		;;

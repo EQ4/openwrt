@@ -49,6 +49,14 @@ define Package/lldpd/description
 	Link-Layer notifications to adjacent network devices.
 endef
 
+define Build/InstallDev
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/liblldpctl.so* $(1)/usr/lib/
+	$(INSTALL_DIR) $(1)/usr/include
+	$(CP) $(PKG_INSTALL_DIR)/usr/include/lldpctl.h $(1)/usr/include/lldpctl.h
+	$(CP) $(PKG_INSTALL_DIR)/usr/include/lldp-const.h $(1)/usr/include/lldp-const.h
+endef
+
 define Package/lldpd/install
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_DIR) $(1)/etc/lldpd.d
@@ -77,9 +85,11 @@ define Package/lldpd/conffiles
 endef
 
 CONFIGURE_ARGS += \
+	$(if $(CONFIG_LLDPD_WITH_PRIVSEP), \
 	--with-privsep-user=lldp \
 	--with-privsep-group=lldp \
 	--with-privsep-chroot=/var/run/lldp \
+	,--disable-privsep) \
 	--with-readline=no \
 	--with-embedded-libevent=no \
 	$(if $(CONFIG_LLDPD_WITH_CDP),,--disable-cdp) \

@@ -150,11 +150,11 @@ define KernelPackage/usb-phy-omap-usb2
   TITLE:=Support for OMAP2 USB PHY
   KCONFIG:= \
 	CONFIG_OMAP_USB2 \
-	CONFIG_OMAP_CONTROL_USB
+	CONFIG_OMAP_CONTROL_PHY
   DEPENDS:=@TARGET_omap
   FILES:= \
 	$(LINUX_DIR)/drivers/phy/phy-omap-usb2.ko \
-	$(LINUX_DIR)/drivers/usb/phy/phy-omap-control.ko
+	$(LINUX_DIR)/drivers/phy/phy-omap-control.ko
   AUTOLOAD:=$(call AutoLoad,45,phy-omap-control phy-omap-usb2)
   $(call AddDepends/usb)
 endef
@@ -352,6 +352,22 @@ endef
 $(eval $(call KernelPackage,usb-ohci,1))
 
 
+define KernelPackage/usb-ohci-pci
+  TITLE:=Support for PCI OHCI controllers
+  DEPENDS:=@PCI_SUPPORT +kmod-usb-ohci
+  KCONFIG:=CONFIG_USB_OHCI_HCD_PCI
+  FILES:=$(LINUX_DIR)/drivers/usb/host/ohci-pci.ko
+  AUTOLOAD:=$(call AutoLoad,51,ohci-pci,1)
+  $(call AddDepends/usb)
+endef
+
+define KernelPackage/usb2-pci/description
+ Kernel support for PCI OHCI controllers
+endef
+
+$(eval $(call KernelPackage,usb-ohci-pci))
+
+
 define KernelPackage/usb2-fsl
   TITLE:=Support for Freescale USB2 controllers
   DEPENDS:=@TARGET_mpc85xx
@@ -373,7 +389,9 @@ $(eval $(call KernelPackage,usb2-fsl))
 define KernelPackage/usb2-omap
   TITLE:=Support for USB2 for OMAP
   DEPENDS:=@TARGET_omap +kmod-usb-phy-nop +kmod-usb-phy-am335x +kmod-usb2
-  KCONFIG:=CONFIG_USB_EHCI_HCD_OMAP
+  KCONFIG:=\
+	CONFIG_MFD_OMAP_USB_HOST=y \
+	CONFIG_USB_EHCI_HCD_OMAP
   FILES:=$(LINUX_DIR)/drivers/usb/host/ehci-omap.ko
   AUTOLOAD:=$(call AutoLoad,39,ehci-omap)
   $(call AddDepends/usb)
@@ -435,7 +453,7 @@ $(eval $(call KernelPackage,usb2-pci))
 
 define KernelPackage/usb-dwc2
   TITLE:=DWC2 USB controller driver
-  DEPENDS:=@!LINUX_3_10 +(TARGET_brcm2708||TARGET_at91||TARGET_brcm63xx):kmod-usb-gadget
+  DEPENDS:=@!LINUX_3_10 +(TARGET_brcm2708||TARGET_at91||TARGET_brcm63xx||TARGET_mxs):kmod-usb-gadget
   KCONFIG:= \
 	CONFIG_USB_DWC2 \
 	CONFIG_USB_DWC2_PCI \
@@ -473,6 +491,28 @@ define KernelPackage/usb2-oxnas/description
 endef
 
 $(eval $(call KernelPackage,usb2-oxnas))
+
+
+define KernelPackage/usb-dwc3
+  TITLE:=DWC3 USB controller driver
+  KCONFIG:= \
+	CONFIG_USB_DWC3 \
+	CONFIG_USB_DWC3_HOST=y \
+	CONFIG_USB_DWC3_GADGET=n \
+	CONFIG_USB_DWC3_DUAL_ROLE=n \
+	CONFIG_USB_DWC3_DEBUG=n \
+	CONFIG_USB_DWC3_VERBOSE=n
+  FILES:= $(LINUX_DIR)/drivers/usb/dwc3/dwc3.ko
+  AUTOLOAD:=$(call AutoLoad,54,dwc3,1)
+  $(call AddDepends/usb)
+endef
+
+define KernelPackage/usb-dwc3/description
+ This driver provides support for the Dual Role SuperSpeed
+ USB Controller based on the Synopsys DesignWare USB3 IP Core
+endef
+
+$(eval $(call KernelPackage,usb-dwc3))
 
 
 define KernelPackage/usb-acm
@@ -613,6 +653,49 @@ define KernelPackage/usb-serial-ftdi/description
 endef
 
 $(eval $(call KernelPackage,usb-serial-ftdi))
+
+
+define KernelPackage/usb-serial-garmin
+  TITLE:=Support for Garmin GPS devices
+  KCONFIG:=CONFIG_USB_SERIAL_GARMIN
+  FILES:=$(LINUX_DIR)/drivers/usb/serial/garmin_gps.ko
+  AUTOLOAD:=$(call AutoProbe,garmin_gps)
+  $(call AddDepends/usb-serial)
+endef
+
+define KernelPackage/usb-serial-garmin/description
+ Should work with most Garmin GPS devices which have a native USB port.
+endef
+
+$(eval $(call KernelPackage,usb-serial-garmin))
+
+
+define KernelPackage/usb-serial-simple
+  TITLE:=USB Serial Simple (Motorola phone)
+  KCONFIG:=CONFIG_USB_SERIAL_SIMPLE
+  FILES:=$(LINUX_DIR)/drivers/usb/serial/usb-serial-simple.ko
+  AUTOLOAD:=$(call AutoProbe,usb-serial-simple)
+  $(call AddDepends/usb-serial)
+endef
+
+define KernelPackage/usb-serial-simple/description
+  Kernel support for "very simple devices".
+
+Specifically, it supports:
+	- Suunto ANT+ USB device.
+	- Medtronic CareLink USB device (3.18)
+	- Fundamental Software dongle.
+	- Google USB serial devices (3.19)
+	- HP4x calculators
+	- a number of Motorola phones
+	- Novatel Wireless GPS receivers (3.18)
+	- Siemens USB/MPI adapter.
+	- ViVOtech ViVOpay USB device.
+	- Infineon Modem Flashloader USB interface
+	- ZIO Motherboard USB serial interface
+endef
+
+$(eval $(call KernelPackage,usb-serial-simple))
 
 
 define KernelPackage/usb-serial-ti-usb
@@ -1311,11 +1394,10 @@ $(eval $(call KernelPackage,usb-net-kalmia))
 define KernelPackage/usb-hid
   TITLE:=Support for USB Human Input Devices
   KCONFIG:=CONFIG_HID_SUPPORT=y CONFIG_USB_HID CONFIG_USB_HIDDEV=y
+  DEPENDS:=+kmod-hid +kmod-hid-generic +kmod-input-evdev
   FILES:=$(LINUX_DIR)/drivers/$(USBHID_DIR)/usbhid.ko
   AUTOLOAD:=$(call AutoProbe,usbhid)
   $(call AddDepends/usb)
-  $(call AddDepends/hid,+kmod-hid-generic)
-  $(call AddDepends/input,+kmod-input-evdev)
 endef
 
 define KernelPackage/usb-hid/description
@@ -1327,11 +1409,11 @@ $(eval $(call KernelPackage,usb-hid))
 
 define KernelPackage/usb-yealink
   TITLE:=USB Yealink VOIP phone
+  DEPENDS:=+kmod-input-evdev
   KCONFIG:=CONFIG_USB_YEALINK CONFIG_INPUT_YEALINK CONFIG_INPUT=m CONFIG_INPUT_MISC=y
   FILES:=$(LINUX_DIR)/drivers/$(USBINPUT_DIR)/yealink.ko
   AUTOLOAD:=$(call AutoProbe,yealink)
   $(call AddDepends/usb)
-  $(call AddDepends/input,+kmod-input-evdev)
 endef
 
 define KernelPackage/usb-yealink/description
@@ -1343,11 +1425,11 @@ $(eval $(call KernelPackage,usb-yealink))
 
 define KernelPackage/usb-cm109
   TITLE:=Support for CM109 device
+  DEPENDS:=+kmod-input-evdev
   KCONFIG:=CONFIG_USB_CM109 CONFIG_INPUT_CM109 CONFIG_INPUT=m CONFIG_INPUT_MISC=y
   FILES:=$(LINUX_DIR)/drivers/$(USBINPUT_DIR)/cm109.ko
   AUTOLOAD:=$(call AutoProbe,cm109)
   $(call AddDepends/usb)
-  $(call AddDepends/input,+kmod-input-evdev)
 endef
 
 define KernelPackage/usb-cm109/description
@@ -1470,7 +1552,7 @@ endef
 
 $(eval $(call KernelPackage,usbmon))
 
-XHCI_FILES := $(wildcard $(patsubst %,$(LINUX_DIR)/drivers/usb/host/%.ko,xhci-hcd xhci-pci xhci-plat))
+XHCI_FILES := $(wildcard $(patsubst %,$(LINUX_DIR)/drivers/usb/host/%.ko,xhci-hcd xhci-pci xhci-plat-hcd))
 XHCI_AUTOLOAD := $(patsubst $(LINUX_DIR)/drivers/usb/host/%.ko,%,$(XHCI_FILES))
 
 define KernelPackage/usb3
@@ -1480,6 +1562,7 @@ define KernelPackage/usb3
 	CONFIG_USB_XHCI_HCD \
 	CONFIG_USB_XHCI_PCI \
 	CONFIG_USB_XHCI_PLATFORM \
+	CONFIG_USB_XHCI_MVEBU=y \
 	CONFIG_USB_XHCI_HCD_DEBUGGING=n
   FILES:= \
 	$(XHCI_FILES)
