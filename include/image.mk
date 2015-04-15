@@ -244,8 +244,8 @@ endef
 
 define Image/mkfs/prepare/default
 	# Use symbolic permissions to avoid clobbering SUID/SGID/sticky bits
-	- $(FIND) $(TARGET_DIR) -type f -not -perm +0100 -not -name 'ssh_host*' -not -name 'shadow' -print0 | $(XARGS) -0 chmod u+rw,g+r,o+r
-	- $(FIND) $(TARGET_DIR) -type f -perm +0100 -print0 | $(XARGS) -0 chmod u+rwx,g+rx,o+rx
+	- $(FIND) $(TARGET_DIR) -type f -not -perm /0100 -not -name 'ssh_host*' -not -name 'shadow' -print0 | $(XARGS) -0 chmod u+rw,g+r,o+r
+	- $(FIND) $(TARGET_DIR) -type f -perm /0100 -print0 | $(XARGS) -0 chmod u+rwx,g+rx,o+rx
 	- $(FIND) $(TARGET_DIR) -type d -print0 | $(XARGS) -0 chmod u+rwx,g+rx,o+rx
 	$(INSTALL_DIR) $(TARGET_DIR)/tmp $(TARGET_DIR)/overlay
 	chmod 1777 $(TARGET_DIR)/tmp
@@ -258,8 +258,7 @@ endef
 
 define Image/Checksum
 	( cd ${BIN_DIR} ; \
-		$(FIND) -maxdepth 1 -type f \! -name 'md5sums'  -printf "%P\n" | sort | xargs \
-		md5sum --binary > md5sums \
+		$(FIND) -maxdepth 1 -type f \! -name 'md5sums'  -printf "%P\n" | sort | xargs $1 > $2 \
 	)
 endef
 
@@ -353,7 +352,10 @@ define Device/ExportVar
   $(1) : $(2):=$$($(2))
 
 endef
-Device/Export = $(foreach var,$(DEVICE_VARS) KERNEL KERNEL_INITRAMFS FILESYSTEM,$(call Device/ExportVar,$(1),$(var)))
+define Device/Export
+  $(foreach var,$(DEVICE_VARS) KERNEL KERNEL_INITRAMFS,$(call Device/ExportVar,$(1),$(var)))
+  $(1) : FILESYSTEM:=$(2)
+endef
 
 define Device/Check
   _TARGET = $$(if $$(filter $(PROFILE),$$(PROFILES)),install,install-disabled)
@@ -389,11 +391,10 @@ define Device/Build/kernel
 endef
 
 define Device/Build/image
-  FILESYSTEM := $(1)
   $$(_TARGET): $(BIN_DIR)/$(call IMAGE_NAME,$(1),$(2))
-  $(eval $(call Device/Export,$(KDIR)/$(KERNEL_IMAGE)))
-  $(eval $(call Device/Export,$(KDIR)/$(KERNEL_INITRAMFS_IMAGE)))
-  $(eval $(call Device/Export,$(KDIR)/$(call IMAGE_NAME,$(1),$(2))))
+  $(eval $(call Device/Export,$(KDIR)/$(KERNEL_IMAGE),$(1)))
+  $(eval $(call Device/Export,$(KDIR)/$(KERNEL_INITRAMFS_IMAGE),$(1)))
+  $(eval $(call Device/Export,$(KDIR)/$(call IMAGE_NAME,$(1),$(2)),$(1)))
   $(KDIR)/$(call IMAGE_NAME,$(1),$(2)): $(KDIR)/$$(KERNEL_IMAGE) $(KDIR)/root.$(1)
 	@rm -f $$@
 	[ -f $$(word 1,$$^) -a -f $$(word 2,$$^) ]
@@ -459,6 +460,7 @@ define BuildImage
 		$(call Image/Build,$(fs))
 	)
 	$(call Image/mkfs/ubifs)
-	$(call Image/Checksum)
+	$(call Image/Checksum,md5sum --binary,md5sums)
+	$(call Image/Checksum,openssl dgst -sha256,sha256sums)
 
 endef

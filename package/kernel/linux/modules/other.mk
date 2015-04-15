@@ -13,7 +13,6 @@ WATCHDOG_DIR:=watchdog
 define KernelPackage/6lowpan-iphc
   USBMENU:=$(OTHER_MENU)
   TITLE:=6lowpan shared code
-  DEPENDS:=@!LINUX_3_10
   KCONFIG:=CONFIG_6LOWPAN_IPHC
   HIDDEN:=1
   FILES:=$(LINUX_DIR)/net/ieee802154/6lowpan_iphc.ko
@@ -29,7 +28,7 @@ $(eval $(call KernelPackage,6lowpan-iphc))
 define KernelPackage/bluetooth
   SUBMENU:=$(OTHER_MENU)
   TITLE:=Bluetooth support
-  DEPENDS:=@USB_SUPPORT +kmod-usb-core +kmod-crypto-hash +!LINUX_3_10:kmod-6lowpan-iphc +kmod-lib-crc16 +kmod-hid
+  DEPENDS:=@USB_SUPPORT +kmod-usb-core +kmod-crypto-hash +kmod-6lowpan-iphc +kmod-lib-crc16 +kmod-hid
   KCONFIG:= \
 	CONFIG_BLUEZ \
 	CONFIG_BLUEZ_L2CAP \
@@ -71,7 +70,7 @@ $(eval $(call KernelPackage,bluetooth))
 define KernelPackage/bluetooth_6lowpan
   SUBMENU:=$(OTHER_MENU)
   TITLE:=Bluetooth 6LoWPAN support
-  DEPENDS:=+kmod-bluetooth @!LINUX_3_10 @!LINUX_3_14
+  DEPENDS:=+kmod-bluetooth
   KCONFIG:= \
   CONFIG_6LOWPAN=m \
   CONFIG_BT_6LOWPAN=m
@@ -574,6 +573,23 @@ endef
 
 $(eval $(call KernelPackage,rtc-marvell))
 
+
+define KernelPackage/rtc-armada38x
+  SUBMENU:=$(OTHER_MENU)
+  TITLE:=Marvell Armada 38x SoC built-in RTC support
+  DEPENDS:=@RTC_SUPPORT @TARGET_mvebu
+  KCONFIG:=CONFIG_RTC_DRV_ARMADA38X
+  FILES:=$(LINUX_DIR)/drivers/rtc/rtc-armada38x.ko
+  AUTOLOAD:=$(call AutoProbe,rtc-armada38x)
+endef
+
+define KernelPackage/rtc-armada38x/description
+ Kernel module for Marvell Armada 38x SoC built-in RTC.
+endef
+
+$(eval $(call KernelPackage,rtc-armada38x))
+
+
 define KernelPackage/rtc-pcf8563
   SUBMENU:=$(OTHER_MENU)
   TITLE:=Philips PCF8563/Epson RTC8564 RTC support
@@ -740,7 +756,7 @@ $(eval $(call KernelPackage,ikconfig))
 define KernelPackage/zram
   SUBMENU:=$(OTHER_MENU)
   TITLE:=ZRAM
-  DEPENDS:=+kmod-lib-lzo +(!LINUX_3_10&&!LINUX_3_14):kmod-lib-lz4
+  DEPENDS:=+kmod-lib-lzo +kmod-lib-lz4
   KCONFIG:= \
 	CONFIG_ZSMALLOC \
 	CONFIG_ZRAM \
@@ -749,10 +765,8 @@ define KernelPackage/zram
 	CONFIG_ZSMALLOC_STAT=n \
 	CONFIG_ZRAM_LZ4_COMPRESS=y
   FILES:= \
-	$(LINUX_DIR)/drivers/staging/zsmalloc/zsmalloc.ko@lt3.14 \
-	$(LINUX_DIR)/drivers/staging/zram/zram.ko@lt3.14 \
-	$(LINUX_DIR)/mm/zsmalloc.ko@ge3.14 \
-	$(LINUX_DIR)/drivers/block/zram/zram.ko@ge3.14
+	$(LINUX_DIR)/mm/zsmalloc.ko \
+	$(LINUX_DIR)/drivers/block/zram/zram.ko
   AUTOLOAD:=$(call AutoLoad,20,zsmalloc zram)
 endef
 
@@ -969,8 +983,7 @@ define KernelPackage/echo
   SUBMENU:=$(OTHER_MENU)
   TITLE:=Line Echo Canceller
   KCONFIG:=CONFIG_ECHO
-  FILES:=$(LINUX_DIR)/drivers/staging/echo/echo.ko@lt3.18 \
-	  $(LINUX_DIR)/drivers/misc/echo/echo.ko@ge3.18
+  FILES:=$(LINUX_DIR)/drivers/misc/echo/echo.ko
   AUTOLOAD:=$(call AutoLoad,50,echo)
 endef
 
