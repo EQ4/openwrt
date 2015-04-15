@@ -124,7 +124,6 @@ iptables extensions for packet content inspection.
 Includes support for:
 
  Matches:
-  - layer7
   - string
 
 endef
@@ -393,7 +392,7 @@ define Package/libiptc
 $(call Package/iptables/Default)
   SECTION:=libs
   CATEGORY:=Libraries
-  DEPENDS:=+libip4tc +IPV6:libip6tc
+  DEPENDS:=+libip4tc +libip6tc
   TITLE:=IPv4/IPv6 firewall - shared libiptc library (compatibility stub)
 endef
 
