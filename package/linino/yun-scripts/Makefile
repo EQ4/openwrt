@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=yun-scripts
 PKG_VERSION:=1.2
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -63,7 +63,7 @@ define Package/yun-scripts/install
 	$(INSTALL_BIN) ./files/etc/init.d/alljoynfixboot $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/etc/init.d/avahifixboot $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/etc/init.d/rename-iface $(1)/etc/init.d
-
+	$(INSTALL_BIN) ./files/etc/init.d/open-wan-ssh-port $(1)/etc/init.d
 endef
 
 $(eval $(call BuildPackage,yun-scripts))

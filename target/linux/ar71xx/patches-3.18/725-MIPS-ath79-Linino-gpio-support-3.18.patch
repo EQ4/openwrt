@@ -1,6 +1,6 @@
---- a/arch/mips/ath79/common.h
-+++ b/arch/mips/ath79/common.h
-@@ -26,6 +26,7 @@ void ath79_ddr_wb_flush(unsigned int reg
+--- a/arch/mips/ath79/common.h	2015-04-16 13:00:34.000000000 +0200
++++ b/arch/mips/ath79/common.h	2015-04-16 13:26:32.000000000 +0200
+@@ -27,6 +27,7 @@
  void ath79_gpio_function_enable(u32 mask);
  void ath79_gpio_function_disable(u32 mask);
  void ath79_gpio_function_setup(u32 set, u32 clear);
@@ -8,9 +8,9 @@
  void ath79_gpio_output_select(unsigned gpio, u8 val);
  void ath79_gpio_init(void);
  
---- a/arch/mips/ath79/gpio.c
-+++ b/arch/mips/ath79/gpio.c
-@@ -170,6 +170,35 @@ void ath79_gpio_function_setup(u32 set,
+--- a/arch/mips/ath79/gpio.c	2015-04-16 13:00:35.000000000 +0200
++++ b/arch/mips/ath79/gpio.c	2015-04-16 13:27:21.000000000 +0200
+@@ -170,6 +170,35 @@
  	spin_unlock_irqrestore(&ath79_gpio_lock, flags);
  }
  
@@ -46,8 +46,9 @@
  void ath79_gpio_function_enable(u32 mask)
  {
  	ath79_gpio_function_setup(mask, 0);
---- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-+++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
+
+--- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h	2015-04-16 13:00:35.000000000 +0200
++++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h	2015-04-16 13:31:38.000000000 +0200
 @@ -675,6 +675,7 @@
  #define AR71XX_GPIO_REG_INT_PENDING	0x20
  #define AR71XX_GPIO_REG_INT_ENABLE	0x24
@@ -60,10 +61,10 @@
  #define AR933X_GPIO_FUNC_UART_EN		BIT(1)
  #define AR933X_GPIO_FUNC_JTAG_DISABLE		BIT(0)
  
-+#define AR933X_GPIO_FUNC2_JUMPSTART_DISABLE 	BIT(9)
++#define AR933X_GPIO_FUNC2_JUMPSTART_DISABLE BIT(9)
 +#define AR933X_GPIO_FUNC2_WPS_DISABLE		BIT(8)
 +#define AR933X_GPIO_FUNC2_I2SD_ON_12		BIT(5)
-+#define AR933X_GPIO_FUNC2_DIS_MIC		BIT(0)
++#define AR933X_GPIO_FUNC2_DIS_MIC			BIT(0)
 +
  #define AR934X_GPIO_FUNC_CLK_OBS7_EN		BIT(9)
  #define AR934X_GPIO_FUNC_CLK_OBS6_EN		BIT(8)
