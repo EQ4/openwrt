@@ -4992,7 +4992,7 @@ CONFIG_PACKAGE_zoneinfo-southamerica=m
 CONFIG_PACKAGE_alsa-utils=m
 CONFIG_PACKAGE_alsa-utils-seq=m
 CONFIG_PACKAGE_alsa-utils-tests=m
-# CONFIG_PACKAGE_avrdude is not set
+CONFIG_PACKAGE_avrdude=y
 CONFIG_PACKAGE_bash=m
 CONFIG_PACKAGE_bluelog=m
 # CONFIG_PACKAGE_bluelog-live is not set
@@ -5199,6 +5199,7 @@ CONFIG_PACKAGE_iwinfo=m
 CONFIG_PACKAGE_jpeg-tools=m
 CONFIG_PACKAGE_jshn=y
 # CONFIG_PACKAGE_kmod is not set
+CONFIG_PACKAGE_ldattach=m
 CONFIG_PACKAGE_ldconfig=m
 CONFIG_PACKAGE_ldd=m
 CONFIG_PACKAGE_less=m
