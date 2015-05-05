@@ -7,16 +7,16 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=yun-scripts
+PKG_NAME:=linino-scripts
 PKG_VERSION:=1.2
 PKG_RELEASE:=3
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/yun-scripts
+define Package/linino-scripts
   SECTION:=utils
   CATEGORY:=Base system
-  TITLE:=Custom Yún scripts
+  TITLE:=Custom Linino scripts
   DEPENDS:=+kmod-loop
 endef
 
@@ -24,7 +24,7 @@ define Build/Compile
 	# NOOP
 endef
 
-define Package/yun-scripts/install
+define Package/linino-scripts/install
 	$(INSTALL_DIR) $(1)/usr/bin/
 	$(INSTALL_DIR) $(1)/etc/init.d
 
@@ -63,8 +63,7 @@ define Package/yun-scripts/install
 	$(INSTALL_BIN) ./files/etc/init.d/alljoynfixboot $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/etc/init.d/avahifixboot $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/etc/init.d/rename-iface $(1)/etc/init.d
-	$(INSTALL_BIN) ./files/etc/init.d/open-wan-ssh-port $(1)/etc/init.d
 endef
 
-$(eval $(call BuildPackage,yun-scripts))
+$(eval $(call BuildPackage,linino-scripts))
 

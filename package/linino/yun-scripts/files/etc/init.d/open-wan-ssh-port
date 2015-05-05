@@ -1,8 +1,0 @@
-#!/bin/sh /etc/rc.common
-# Written by Simon Josefsson 2009-03-05.  Released into the public domain.
-
-START=90
-
-start() {
-        iptables --append input_wan --protocol tcp --dport 22 --jump ACCEPT
-}
