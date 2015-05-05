@@ -17,7 +17,7 @@ define Package/linino-conf
   SECTION:=utils
   CATEGORY:=Base system
   TITLE:=Custom Linino configurations
-  DEPENDS:=+avahi-daemon-service-http +avahi-dbus-daemon +base-files +triggerhappy
+  DEPENDS:=+avahi-daemon-service-http +base-files +triggerhappy
 endef
 
 define Package/linino-conf/conffiles
