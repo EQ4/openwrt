@@ -50,7 +50,7 @@ define Package/linino-conf/install
 	$(INSTALL_CONF) ./files/etc/avahi/services/http.service $(1)/etc/avahi/services/
 	
 	# /etc/triggerhappy DIR
-	$(INSTALL_CONF) ./files/etc/triggerhappy/triggers.d/reset.conf $(1)/etc/triggerhappy/triggers.d
+	$(INSTALL_CONF) ./files/etc/triggerhappy/triggers.d/reset.conf $(1)/etc/triggerhappy/triggers.d/
 
 	# /etc/ DIR
 	$(INSTALL_CONF) ./files/etc/banner $(1)/etc/
@@ -70,20 +70,20 @@ define Package/linino-conf/install
 	# /etc/arduino DIR
 	$(INSTALL_DATA) ./files/etc/arduino/Caterina-Yun.hex $(1)/etc/arduino/
 	$(INSTALL_DATA) ./files/etc/arduino/linino-arduino-release $(1)/etc/arduino/
-	$(INSTALL_CONF) ./files/etc/arduino/gpg_gen_key_batch $(1)/etc/arduino/
-	$(INSTALL_DATA) ./files/etc/arduino/wifi_timezones.csv.gz $(1)/etc/arduino
-	$(INSTALL_DATA) ./files/etc/arduino/wifi_error_statuses.csv.gz $(1)/etc/arduino
-	$(INSTALL_DATA) ./files/etc/arduino/wifi_error_reasons.csv.gz $(1)/etc/arduino
-	$(INSTALL_DATA) ./files/etc/arduino/optiboot_atmega328.hex $(1)/etc/arduino
+	$(INSTALL_DATA) ./files/etc/arduino/gpg_gen_key_batch $(1)/etc/arduino/
+	$(INSTALL_DATA) ./files/etc/arduino/wifi_timezones.csv.gz $(1)/etc/arduino/
+	$(INSTALL_DATA) ./files/etc/arduino/wifi_error_statuses.csv.gz $(1)/etc/arduino/
+	$(INSTALL_DATA) ./files/etc/arduino/wifi_error_reasons.csv.gz $(1)/etc/arduino/
+	$(INSTALL_DATA) ./files/etc/arduino/optiboot_atmega328.hex $(1)/etc/arduino/
 	
 	# /etc/linino DIR
 	$(INSTALL_DATA) ./files/etc/linino/prog_console.sh $(1)/etc/linino/
 	$(INSTALL_DATA) ./files/etc/linino/test_avrdude.sh $(1)/etc/linino/
-	$(INSTALL_CONF) ./files/etc/linino/FirmataSPI.hex $(1)/etc/linino/
+	$(INSTALL_DATA) ./files/etc/linino/FirmataSPI.hex $(1)/etc/linino/
 	$(INSTALL_DATA) ./files/etc/linino/LininoOneSerialTerminal.hex $(1)/etc/linino
-	$(INSTALL_DATA) ./files/etc/linino/YunSerialTerminal.hex $(1)/etc/linino
-	$(INSTALL_DATA) ./files/etc/linino/fuses.txt $(1)/etc/linino
-	$(INSTALL_DATA) ./files/etc/linino/LININO_CONTRIBUTORS.txt $(1)/etc/linino
+	$(INSTALL_DATA) ./files/etc/linino/YunSerialTerminal.hex $(1)/etc/linino/
+	$(INSTALL_DATA) ./files/etc/linino/fuses.txt $(1)/etc/linino/
+	$(INSTALL_DATA) ./files/etc/linino/LININO_CONTRIBUTORS.txt $(1)/etc/linino/
 endef
 
 $(eval $(call BuildPackage,linino-conf))
