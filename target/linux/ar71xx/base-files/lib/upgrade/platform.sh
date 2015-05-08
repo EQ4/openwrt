@@ -187,7 +187,9 @@ platform_check_image() {
 	wpj558 | \
 	zcn-1523h-2 | \
 	zcn-1523h-5 | \
+	linino-yun-mini | \
 	linino-chiwawa | \
+	linino-chowchow | \
 	linino-one | \
 	linino-freedog | \
 	linino-yun)
