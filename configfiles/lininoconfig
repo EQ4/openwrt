@@ -109,15 +109,15 @@ CONFIG_TARGET_ar71xx_generic=y
 # CONFIG_TARGET_ar71xx_generic_JA76PF is not set
 # CONFIG_TARGET_ar71xx_generic_JA76PF2 is not set
 # CONFIG_TARGET_ar71xx_generic_JWAP003 is not set
+CONFIG_TARGET_ar71xx_generic_LININO=y
+# CONFIG_TARGET_ar71xx_generic_LININO_YUNONE is not set
+# CONFIG_TARGET_ar71xx_generic_LININO_YUNONECHOW is not set
 # CONFIG_TARGET_ar71xx_generic_LININO_YUN is not set
-CONFIG_TARGET_ar71xx_generic_LININO_ONE=y
+# CONFIG_TARGET_ar71xx_generic_LININO_ONE is not set
 # CONFIG_TARGET_ar71xx_generic_LININO_FREEDOG is not set
 # CONFIG_TARGET_ar71xx_generic_LININO_CHOWCHOW is not set
 # CONFIG_TARGET_ar71xx_generic_LININO_CHIWAWA is not set
 # CONFIG_TARGET_ar71xx_generic_LININO_YUN_MINI is not set
-# CONFIG_TARGET_ar71xx_generic_LININO is not set
-# CONFIG_TARGET_ar71xx_generic_LININO_YUNONE is not set
-# CONFIG_TARGET_ar71xx_generic_LININO_YUNONECHOW is not set
 # CONFIG_TARGET_ar71xx_generic_WRT160NL is not set
 # CONFIG_TARGET_ar71xx_generic_WRT400N is not set
 # CONFIG_TARGET_ar71xx_generic_MAC1200R is not set
@@ -212,13 +212,24 @@ CONFIG_DEFAULT_ip6tables=y
 CONFIG_DEFAULT_iptables=y
 CONFIG_DEFAULT_iwinfo=y
 CONFIG_DEFAULT_kmod-ath9k=y
+CONFIG_DEFAULT_kmod-fs-ext4=y
+CONFIG_DEFAULT_kmod-fs-msdos=y
+CONFIG_DEFAULT_kmod-fs-ntfs=y
+CONFIG_DEFAULT_kmod-fs-vfat=y
 CONFIG_DEFAULT_kmod-gpio-button-hotplug=y
+CONFIG_DEFAULT_kmod-ledtrig-usbdev=y
 CONFIG_DEFAULT_kmod-nf-nathelper=y
+CONFIG_DEFAULT_kmod-nls-cp437=y
+CONFIG_DEFAULT_kmod-nls-cp850=y
+CONFIG_DEFAULT_kmod-nls-cp852=y
+CONFIG_DEFAULT_kmod-nls-iso8859-1=y
+CONFIG_DEFAULT_kmod-nls-utf8=y
 CONFIG_DEFAULT_kmod-usb-core=y
+CONFIG_DEFAULT_kmod-usb-ohci=y
+CONFIG_DEFAULT_kmod-usb-storage=y
 CONFIG_DEFAULT_kmod-usb2=y
 CONFIG_DEFAULT_libc=y
 CONFIG_DEFAULT_libgcc=y
-CONFIG_DEFAULT_luci-webpanel-linino=y
 CONFIG_DEFAULT_mtd=y
 CONFIG_DEFAULT_netifd=y
 CONFIG_DEFAULT_odhcp6c=y

@@ -373,8 +373,6 @@ define Image/Build/LininoLzma/initramfs
 endef
 
 
-
-
 # $(1): name of the 1st file.
 # $(2): size limit of the 1st file if it is greater than 262144, or
 #       the erase size of the flash if it is greater than zero and less
@@ -1393,12 +1391,12 @@ $(eval $(call SingleProfile,ALFA,64k,HORNETUB,hornet-ub,HORNET-UB,ttyATH0,115200
 #    TODO : 1310720,15007744
 #    TODO : RKuImage
 
-$(eval $(call SingleProfile,LininoLzma,$(fs_64k),LININO_YUN,linino-yun,linino-yun,ttyATH0,115200,$$(linino_mtdlayout_16M),1310720,15007744,RKuImage))
-$(eval $(call SingleProfile,LininoLzma,$(fs_64k),LININO_ONE,linino-one,linino-one,ttyATH0,115200,$$(linino_mtdlayout_16M),1310720,15007744,RKuImage))
-$(eval $(call SingleProfile,LininoLzma,$(fs_64k),LININO_FREEDOG,linino-freedog,linino-freedog,ttyATH0,250000,$$(linino_mtdlayout_16M),RKuImage))
-$(eval $(call SingleProfile,LininoLzma,$(fs_64k),LININO_CHIWAWA,linino-chiwawa,linino-chiwawa,ttyATH0,115200,$$(linino_mtdlayout_16M),RKuImage))
-$(eval $(call SingleProfile,LininoLzma,$(fs_64k),LININO_CHOWCHOW,linino-chowchow,linino-chowchow,ttyATH0,115200,$$(linino_mtdlayout_16M),1310720,15007744,RKuImage))
-$(eval $(call SingleProfile,LininoLzma,$(fs_64k),LININO_YUN_MINI,linino-yun-mini,linino-yun-mini,ttyATH0,115200,$$(linino_mtdlayout_16M),1310720,15007744,RKuImage))
+$(eval $(call SingleProfile,LininoLzma,64k,LININO_YUN,linino-yun,linino-yun,ttyATH0,115200,$$(linino_mtdlayout_16M),RKuImage))
+$(eval $(call SingleProfile,LininoLzma,64k,LININO_ONE,linino-one,linino-one,ttyATH0,115200,$$(linino_mtdlayout_16M),RKuImage))
+$(eval $(call SingleProfile,LininoLzma,64k,LININO_FREEDOG,linino-freedog,linino-freedog,ttyATH0,250000,$$(linino_mtdlayout_16M),RKuImage))
+$(eval $(call SingleProfile,LininoLzma,64k,LININO_CHIWAWA,linino-chiwawa,linino-chiwawa,ttyATH0,115200,$$(linino_mtdlayout_16M),RKuImage))
+$(eval $(call SingleProfile,LininoLzma,64k,LININO_CHOWCHOW,linino-chowchow,linino-chowchow,ttyATH0,115200,$$(linino_mtdlayout_16M),RKuImage))
+$(eval $(call SingleProfile,LininoLzma,64k,LININO_YUN_MINI,linino-yun-mini,linino-yun-mini,ttyATH0,115200,$$(linino_mtdlayout_16M),RKuImage))
 
 # LININO_SINGLE_PROFILES is the list of all available Linino's profiles
 LININO_SINGLE_PROFILES:=LININO_YUN LININO_ONE LININO_FREEDOG LININO_CHIWAWA LININO_CHOWCHOW LININO_YUN_MINI
