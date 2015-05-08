@@ -110,11 +110,11 @@ CONFIG_TARGET_ar71xx_generic=y
 # CONFIG_TARGET_ar71xx_generic_JA76PF2 is not set
 # CONFIG_TARGET_ar71xx_generic_JWAP003 is not set
 # CONFIG_TARGET_ar71xx_generic_LININO_YUN is not set
-# CONFIG_TARGET_ar71xx_generic_LININO_ONE is not set
+CONFIG_TARGET_ar71xx_generic_LININO_ONE=y
 # CONFIG_TARGET_ar71xx_generic_LININO_FREEDOG is not set
 # CONFIG_TARGET_ar71xx_generic_LININO_CHOWCHOW is not set
 # CONFIG_TARGET_ar71xx_generic_LININO_CHIWAWA is not set
-CONFIG_TARGET_ar71xx_generic_LININO_YUN_MINI=y
+# CONFIG_TARGET_ar71xx_generic_LININO_YUN_MINI is not set
 # CONFIG_TARGET_ar71xx_generic_LININO is not set
 # CONFIG_TARGET_ar71xx_generic_LININO_YUNONE is not set
 # CONFIG_TARGET_ar71xx_generic_LININO_YUNONECHOW is not set
@@ -2273,6 +2273,7 @@ CONFIG_PACKAGE_uboot-ar71xx-linino-chowchow=y
 CONFIG_PACKAGE_uboot-ar71xx-linino-freedog=y
 CONFIG_PACKAGE_uboot-ar71xx-linino-one=y
 CONFIG_PACKAGE_uboot-ar71xx-linino-yun=y
+CONFIG_PACKAGE_uboot-ar71xx-linino-yun-mini=y
 # CONFIG_PACKAGE_uboot-ar71xx-nbg460n_550n_550nh is not set
 
 #
