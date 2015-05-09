@@ -13,7 +13,7 @@
 define Profile/LININO
 	NAME:=Linino All Profiles
 	PACKAGES:=kmod-usb-core kmod-usb-ohci kmod-usb2 kmod-ledtrig-usbdev kmod-usb-storage \
-		kmod-fs-vfat kmod-fs-msdos kmod-fs-ntfs kmod-fs-ext4 \
+		kmod-fs-vfat kmod-fs-msdos kmod-fs-ntfs kmod-fs-ext4 linino-scripts linino-conf \
 		kmod-nls-cp437 kmod-nls-cp850 kmod-nls-cp852 kmod-nls-iso8859-1 kmod-nls-utf8
 endef
 
@@ -28,7 +28,7 @@ $(eval $(call Profile,LININO))
 define Profile/LININO_YUNONE
 	NAME:=Linino YunOne
 	PACKAGES:=kmod-usb-core kmod-usb-ohci kmod-usb2 kmod-ledtrig-usbdev kmod-usb-storage \
-		kmod-fs-vfat kmod-fs-msdos kmod-fs-ntfs kmod-fs-ext4 \
+		kmod-fs-vfat kmod-fs-msdos kmod-fs-ntfs kmod-fs-ext4 linino-scripts linino-conf \
 		kmod-nls-cp437 kmod-nls-cp850 kmod-nls-cp852 kmod-nls-iso8859-1 kmod-nls-utf8
 endef
 
@@ -43,7 +43,7 @@ $(eval $(call Profile,LININO_YUNONE))
 define Profile/LININO_YUNONECHOW
 	NAME:=Linino YunOneChow
 	PACKAGES:=kmod-usb-core kmod-usb-ohci kmod-usb2 kmod-ledtrig-usbdev kmod-usb-storage \
-		kmod-fs-vfat kmod-fs-msdos kmod-fs-ntfs kmod-fs-ext4 \
+		kmod-fs-vfat kmod-fs-msdos kmod-fs-ntfs kmod-fs-ext4 linino-scripts linino-conf \
 		kmod-nls-cp437 kmod-nls-cp850 kmod-nls-cp852 kmod-nls-iso8859-1 kmod-nls-utf8
 endef
 
@@ -63,7 +63,7 @@ $(eval $(call Profile,LININO_YUNONECHOW))
 
 define Profile/LININO_YUN
 	NAME:=Linino Arduino Yun
-	PACKAGES:=kmod-usb-core kmod-usb2 luci-app-arduino-webpanel
+	PACKAGES:=kmod-usb-core kmod-usb2 luci-app-arduino-webpanel linino-scripts linino-conf
 endef
 
 define Profile/LININO_YUN/Description
@@ -77,7 +77,7 @@ $(eval $(call Profile,LININO_YUN))
 
 define Profile/LININO_ONE
 	NAME:=Linino One
-	PACKAGES:=kmod-usb-core kmod-usb2 luci-webpanel-linino
+	PACKAGES:=kmod-usb-core kmod-usb2 luci-webpanel-linino linino-scripts linino-conf
 endef
 
 define Profile/LININO_ONE/Description
@@ -91,7 +91,7 @@ $(eval $(call Profile,LININO_ONE))
 
 define Profile/LININO_FREEDOG
 	NAME:=Linino Freedog
-	PACKAGES:=kmod-usb-core kmod-usb2 luci-webpanel-linino
+	PACKAGES:=kmod-usb-core kmod-usb2 luci-webpanel-linino linino-scripts linino-conf
 endef
 
 define Profile/LININO_FREEDOG/Description
@@ -106,7 +106,7 @@ $(eval $(call Profile,LININO_FREEDOG))
 
 define Profile/LININO_CHOWCHOW
 	NAME:=Linino Chowchow
-	PACKAGES:=kmod-usb-core kmod-usb2 luci-webpanel-linino
+	PACKAGES:=kmod-usb-core kmod-usb2 luci-webpanel-linino linino-scripts linino-conf
 endef
 
 define Profile/LININO_CHOWCHOW/Description
@@ -120,7 +120,7 @@ $(eval $(call Profile,LININO_CHOWCHOW))
 
 define Profile/LININO_CHIWAWA
         NAME:=Linino Chiwawa
-        PACKAGES:=kmod-usb-core kmod-usb2 luci-webpanel-linino
+        PACKAGES:=kmod-usb-core kmod-usb2 luci-webpanel-linino linino-scripts linino-conf
 endef
 
 define Profile/LININO_CHIWAWA/Description
@@ -135,7 +135,7 @@ $(eval $(call Profile,LININO_CHIWAWA))
 
 define Profile/LININO_YUN_MINI
         NAME:=Linino Yun mini
-        PACKAGES:=kmod-usb-core kmod-usb2 luci-webpanel-linino
+        PACKAGES:=kmod-usb-core kmod-usb2 luci-webpanel-linino linino-scripts linino-conf
 endef
 
 define Profile/LININO_YUN_MINI/Description

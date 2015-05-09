@@ -17,7 +17,7 @@ PKG_SOURCE_URL:=http://registry.nodejitsu.com/$(PKG_NPM_NAME)/-/
 PKG_MD5SUM:=f1ac851f3b880fa7144c4c2b985d7038
 
 PKG_BUILD_DEPENDS:=node
-PKG_NODE_VERSION:=0.10.37
+PKG_NODE_VERSION:=0.10.38
 
 include $(INCLUDE_DIR)/package.mk
 

@@ -17,7 +17,7 @@ PKG_SOURCE_URL:=http://download.linino.org/pkg-src/
 PKG_MD5SUM:=6adb8bb803b2fec7c9dbd021bb7d84b8
 
 PKG_BUILD_DEPENDS:=node
-PKG_NODE_VERSION:=0.10.37
+PKG_NODE_VERSION:=0.10.38
 
 include $(INCLUDE_DIR)/package.mk
 

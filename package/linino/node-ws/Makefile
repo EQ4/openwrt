@@ -7,35 +7,35 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NPM_NAME:=simple-xmpp
+PKG_NPM_NAME:=ws
 PKG_NAME:=node-$(PKG_NPM_NAME)
-PKG_VERSION:=0.1.92
-PKG_RELEASE:=4
+PKG_VERSION:=0.7.1
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NPM_NAME)-$(PKG_VERSION).tgz
-PKG_SOURCE_URL:=http://registry.npmjs.org/$(PKG_NPM_NAME)/-/
-# PKG_MD5SUM:=0040b8af0d12594c675d04529e0b2c3e
+PKG_SOURCE_URL:=http://registry.nodejitsu.com/$(PKG_NPM_NAME)/-/
+PKG_MD5SUM:=e01007d6932bb74c3a47765890915044
 
 PKG_BUILD_DEPENDS:=node
 PKG_NODE_VERSION:=0.10.38
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/node-simple-xmpp
-  DEPENDS:=+node +libexpat +libicu
+define Package/node-ws
+  DEPENDS:=+node
   SUBMENU:=Node.js
   SECTION:=lang
   CATEGORY:=Languages
-  TITLE:=Simple High Level NodeJS XMPP Library
-  URL:=https://www.npmjs.org/package/simple-xmpp
+  TITLE:=simple to use, blazing fast and thoroughly tested websocket client
+  URL:=https://www.npmjs.org/package/ws
 endef
 
-define Package/node-simple-xmpp/description
-    Simple High Level NodeJS XMPP Library
+define Package/node-ws/description
+	ws is a simple to use WebSocket implementation, up-to-date against RFC-6455, and probably the fastest WebSocket library for Node.Js
 endef
 
 define Build/Prepare
-	/bin/tar xzf $(DL_DIR)/$(PKG_SOURCE) -C $(PKG_BUILD_DIR) --strip-components=1
+	/bin/tar xzf $(DL_DIR)/$(PKG_SOURCE) -C $(PKG_BUILD_DIR) --strip-components 1
 	$(Build/Patch)
 endef
 
@@ -55,7 +55,7 @@ define Build/Compile
 	npm install --target_arch=mips -g $(PKG_BUILD_DIR)
 endef
 
-define Package/node-simple-xmpp/install
+define Package/node-ws/install
 	$(INSTALL_DIR) $(1)/usr/lib/
 	
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/node_modules $(1)/usr/lib/
@@ -72,4 +72,5 @@ else
 fi
 endef
 
-$(eval $(call BuildPackage,node-simple-xmpp))
+$(eval $(call BuildPackage,node-ws))
+
