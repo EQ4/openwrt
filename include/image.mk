@@ -363,6 +363,7 @@ define Device/Check
   _COMPILE_TARGET = $$(if $(CONFIG_IB)$$(filter $(PROFILE),$$(PROFILES)),compile,compile-disabled)
 endef
 
+ifndef IB
 define Device/Build/initramfs
   $$(_TARGET): $(BIN_DIR)/$$(KERNEL_INITRAMFS_IMAGE)
 
@@ -374,6 +375,7 @@ define Device/Build/initramfs
 	@rm -f $$@
 	$$(call concat_cmd,$$(KERNEL_INITRAMFS))
 endef
+endif
 
 define Device/Build/check_size
 	@[ $$(($(subst k,* 1024,$(subst m, * 1024k,$(1))))) -gt "$$(stat -c%s $@)" ] || { \
