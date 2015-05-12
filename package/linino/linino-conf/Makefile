@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=linino-conf
 PKG_VERSION:=1.0
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -65,7 +65,7 @@ define Package/linino-conf/install
 	$(INSTALL_CONF) ./files/etc/config/network $(1)/etc/config/
 	$(INSTALL_CONF) ./files/etc/config/system $(1)/etc/config/
 	$(INSTALL_CONF) ./files/etc/config/uhttpd $(1)/etc/config/
-	$(INSTALL_CONF) ./files/etc/config/wireless $(1)/etc/config/
+	# $(INSTALL_CONF) ./files/etc/config/wireless $(1)/etc/config/
 	
 	# /etc/arduino DIR
 	$(INSTALL_DATA) ./files/etc/arduino/Caterina-Yun.hex $(1)/etc/arduino/
@@ -82,6 +82,8 @@ define Package/linino-conf/install
 	$(INSTALL_DATA) ./files/etc/linino/FirmataSPI.hex $(1)/etc/linino/
 	$(INSTALL_DATA) ./files/etc/linino/LininoOneSerialTerminal.hex $(1)/etc/linino
 	$(INSTALL_DATA) ./files/etc/linino/YunSerialTerminal.hex $(1)/etc/linino/
+	$(INSTALL_DATA) ./files/etc/linino/ChowChowSerialTerminal.hex $(1)/etc/linino/
+	$(INSTALL_DATA) ./files/etc/linino/YunMiniSerialTerminal.hex $(1)/etc/linino/
 	$(INSTALL_DATA) ./files/etc/linino/fuses.txt $(1)/etc/linino/
 	$(INSTALL_DATA) ./files/etc/linino/LININO_CONTRIBUTORS.txt $(1)/etc/linino/
 endef
