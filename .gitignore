@@ -3,7 +3,6 @@
 .*.swp
 /env
 /dl
-/.config
 /.config.old
 /bin
 /build_dir
@@ -24,3 +23,4 @@ key-build*
 .emacs.desktop*
 TAGS*~
 git-src
+*.sh
