@@ -683,6 +683,21 @@ KDIR_TMP:=$(KDIR)/tmp
 VMLINUX:=$(BIN_DIR)/$(IMG_PREFIX)-vmlinux
 UIMAGE:=$(BIN_DIR)/$(IMG_PREFIX)-uImage
 
+fs_squash:=squashfs-only
+fs_64k:=64k
+fs_64kraw:=64kraw
+fs_128k:=128k
+fs_256k:=256k
+ifeq ($(CONFIG_TARGET_ROOTFS_INITRAMFS),y)
+	fs_squash:=initramfs
+	fs_64k:=initramfs
+	fs_64kraw:=initramfs
+	fs_128k:=initramfs
+	fs_256k:=initramfs
+	VMLINUX:=$(BIN_DIR)/$(IMG_PREFIX)-vmlinux-initramfs
+	UIMAGE:=$(BIN_DIR)/$(IMG_PREFIX)-uImage-initramfs
+endif
+
 # $(1): input file.
 # $(2): output file.
 # $(3): extra arguments for lzma.
@@ -692,7 +707,9 @@ endef
 
 define PatchKernel
 	cp $(KDIR)/vmlinux$(3) $(KDIR_TMP)/vmlinux$(3)-$(1)
+ifneq ($(CONFIG_IMAGE_CMDLINE_HACK),)
 	$(STAGING_DIR_HOST)/bin/patch-cmdline $(KDIR_TMP)/vmlinux$(3)-$(1) "$(strip $(2))"
+endif
 endef
 
 define PatchKernel/initramfs
@@ -706,13 +723,17 @@ endef
 # $(4): name suffix, e.g. "-initramfs".
 define PatchKernelLzma
 	cp $(KDIR)/vmlinux$(4) $(KDIR_TMP)/vmlinux$(4)-$(1)
+ifneq ($(CONFIG_IMAGE_CMDLINE_HACK),)
 	$(STAGING_DIR_HOST)/bin/patch-cmdline $(KDIR_TMP)/vmlinux$(4)-$(1) "$(strip $(2))"
+endif
 	$(call CompressLzma,$(KDIR_TMP)/vmlinux$(4)-$(1),$(KDIR_TMP)/vmlinux$(4)-$(1).bin.lzma,$(3))
 endef
 
 define PatchKernelGzip
 	cp $(KDIR)/vmlinux$(3) $(KDIR_TMP)/vmlinux$(3)-$(1)
+ifneq ($(CONFIG_IMAGE_CMDLINE_HACK),)
 	$(STAGING_DIR_HOST)/bin/patch-cmdline $(KDIR_TMP)/vmlinux$(3)-$(1) "$(strip $(2))"
+endif
 	gzip -9 -c $(KDIR_TMP)/vmlinux$(3)-$(1) > $(KDIR_TMP)/vmlinux$(3)-$(1).bin.gz
 endef
 
@@ -756,6 +777,16 @@ define MkuImageOKLI
 	$(call MkuImage,lzma,-M 0x4f4b4c49,$(KDIR)/vmlinux.bin.lzma,$(KDIR_TMP)/vmlinux-$(1).okli)
 endef
 endif
+
+define Image/Build/LininoLzma
+ $(call MkuImageLzma,$(2),$(3) $(4))
+ $(call Image/Build/Ath,$(1),$(2),$(3),$(4),$(5),$(6),$(7))
+endef
+
+define Image/Build/LininoLzma/initramfs
+ $(call MkuImageLzma/initramfs,$(2),$(3) $(4))
+endef
+
 
 # $(1): name of the 1st file.
 # $(2): size limit of the 1st file if it is greater than 262144, or
@@ -860,7 +891,11 @@ define Build/Clean
 	$(LOADER_MAKE) clean
 endef
 
-
+#
+linino_mtdlayout_4M=mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env)ro,2752k(rootfs),896k(kernel),64k(nvram),64k(art),3648k@0x50000(firmware)
+linino_mtdlayout_8M=mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env)ro,6464k(rootfs),1280k(kernel),64k(nvram),64k(art),7744k@0x50000(firmware)
+linino_mtdlayout_16M=mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env)ro,14656k(rootfs),1280k(kernel),64k(nvram),64k(art),15936k@0x50000(firmware)
+#
 alfa_ap96_mtdlayout=mtdparts=spi0.0:256k(u-boot)ro,256k(u-boot-env)ro,13312k(rootfs),2048k(kernel),512k(caldata)ro,15360k@0x80000(firmware)
 alfa_mtdlayout_8M=mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env)ro,6144k(rootfs),1600k(kernel),64k(nvram),64k(art)ro,7744k@0x50000(firmware)
 alfa_mtdlayout_16M=mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env)ro,15936k(firmware),64k(nvram),64k(art)ro
@@ -1750,6 +1785,38 @@ $(eval $(call BuildTemplate,all,,64k 128k 256k))
 ifeq ($(SUBTARGET),generic)
 $(eval $(call SingleProfile,ALFA,64k,ALFANX,alfa-nx,ALFA-NX,ttyS0,115200,$$(alfa_mtdlayout_8M),1638400,6291456,vmlinux.gz.uImage,pb9x-2.6.31-jffs2))
 $(eval $(call SingleProfile,ALFA,64k,HORNETUB,hornet-ub,HORNET-UB,ttyATH0,115200,$$(alfa_mtdlayout_8M),1638400,6291456,kernel_image,rootfs_image))
+
+# SingleProfile parameters (example with yun board):
+#
+#    Build rule          : [LininoLzma] the rule to use to build this
+#                          profile configuration
+#    profile name        : [LININO_YUN_16M_250k] it is the profile name
+#                          for this configuration. It can be an existent profile
+#                          name that you can find in
+#                          target/linux/ar71xx/generic/profiles/. It can also be
+#                          a generic name in order to use it with MultiProfile
+#                          build
+#    image name          : [linino-yun-16m-250k] string used to build the image
+#                          file's name
+#    machine name        : [linino-yun] you can find this value in the
+#                          architecture file arch/mips/ath79/mach-linino-yun.c
+#    console parameters  : ttyATH0,250000
+#    mtdparts parameters : [$$(linino_mtdlayout_16M)]
+#    TODO : 1310720,15007744
+#    TODO : RKuImage
+
+$(eval $(call SingleProfile,LininoLzma,64k,LININO_YUN,linino-yun,linino-yun,ttyATH0,115200,$$(linino_mtdlayout_16M),RKuImage))
+$(eval $(call SingleProfile,LininoLzma,64k,LININO_ONE,linino-one,linino-one,ttyATH0,115200,$$(linino_mtdlayout_16M),RKuImage))
+$(eval $(call SingleProfile,LininoLzma,64k,LININO_FREEDOG,linino-freedog,linino-freedog,ttyATH0,250000,$$(linino_mtdlayout_16M),RKuImage))
+$(eval $(call SingleProfile,LininoLzma,64k,LININO_CHIWAWA,linino-chiwawa,linino-chiwawa,ttyATH0,115200,$$(linino_mtdlayout_16M),RKuImage))
+$(eval $(call SingleProfile,LininoLzma,64k,LININO_CHOWCHOW,linino-chowchow,linino-chowchow,ttyATH0,115200,$$(linino_mtdlayout_16M),RKuImage))
+$(eval $(call SingleProfile,LininoLzma,64k,LININO_YUN_MINI,linino-yun-mini,linino-yun-mini,ttyATH0,115200,$$(linino_mtdlayout_16M),RKuImage))
+
+# LININO_SINGLE_PROFILES is the list of all available Linino's profiles
+LININO_SINGLE_PROFILES:=LININO_YUN LININO_ONE LININO_FREEDOG LININO_CHIWAWA LININO_CHOWCHOW LININO_YUN_MINI
+LININO_YUNONECHOW_PROFILES:=LININO_YUN LININO_ONE LININO_CHOWCHOW LININO_YUN_MINI
+LININO_YUNONE_PROFILES:=LININO_YUN LININO_ONE LININO_YUN_MINI
+
 $(eval $(call SingleProfile,ALFA,64k,TUBE2H8M,tube2h-8M,TUBE2H,ttyATH0,115200,$$(alfa_mtdlayout_8M),1638400,6291456,kernel.image,rootfs.image))
 
 $(eval $(call SingleProfile,AthGzip,64k,AP81,ap81,AP81,ttyS0,115200,$$(ap81_mtdlayout),RKuImage))
@@ -1933,6 +2000,22 @@ $(eval $(call SingleProfile,ZyXEL,64k,NBG_460N_550N_550NH,nbg460n_550n_550nh,NBG
 $(eval $(call MultiProfile,AP121,AP121_2M AP121_4M))
 $(eval $(call MultiProfile,AP136,AP136_010 AP136_020))
 $(eval $(call MultiProfile,EWDORIN, EWDORINAP EWDORINRT EWDORIN16M))
+
+# MultiProfile parameters (example with yun board):
+#
+#    profile name        : [LININO_YUN] it is the profile name for this
+#                          configuration. It must be an existent profile name
+#                          that you can find in
+#                          target/linux/ar71xx/generic/profiles/.
+#    profile to build    : [LININO_YUN_16M LININO_YUN_16M_250k] it is the list
+#                          of SingleProfile(s) to build. Here you must write
+#                          the SingleProfile names space separated.
+
+# LININO MULTI PROFILES
+$(eval $(call MultiProfile,LININO, $(LININO_SINGLE_PROFILES)))
+$(eval $(call MultiProfile,LININO_YUNONECHOW, $(LININO_YUNONECHOW_PROFILES)))
+$(eval $(call MultiProfile,LININO_YUNONE, $(LININO_YUNONE_PROFILES)))
+
 $(eval $(call MultiProfile,OPENMESH,OM2P OM5P MR600 MR900))
 $(eval $(call MultiProfile,TEW652BRP,TEW652BRP_FW TEW652BRP_RECOVERY))
 $(eval $(call MultiProfile,TLMR3220,TLMR3220V1))
