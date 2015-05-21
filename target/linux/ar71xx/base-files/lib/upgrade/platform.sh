@@ -186,7 +186,13 @@ platform_check_image() {
 	hornet-ub | \
 	wpj558 | \
 	zcn-1523h-2 | \
-	zcn-1523h-5)
+	zcn-1523h-5 | \
+	linino-yun-mini | \
+	linino-chiwawa | \
+	linino-chowchow | \
+	linino-one | \
+	linino-freedog | \
+	linino-yun)
 		[ "$magic_long" != "68737173" -a "$magic_long" != "19852003" ] && {
 			echo "Invalid image type."
 			return 1
