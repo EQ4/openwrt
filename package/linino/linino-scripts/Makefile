@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=linino-scripts
 PKG_VERSION:=1.2
-PKG_RELEASE:=3
+PKG_RELEASE:=4
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -63,6 +63,7 @@ define Package/linino-scripts/install
 	$(INSTALL_BIN) ./files/etc/init.d/alljoynfixboot $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/etc/init.d/avahifixboot $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/etc/init.d/rename-iface $(1)/etc/init.d
+	$(INSTALL_BIN) ./files/etc/init.d/defconfig $(1)/etc/init.d
 endef
 
 $(eval $(call BuildPackage,linino-scripts))
