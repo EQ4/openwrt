@@ -45,7 +45,7 @@ do
 		wait_for_iface
 	elif [ "$iface_is_access_point" != "" ]
 	then
-		blink-stop
+		# blink-stop
 		exit 0
 	elif [ "$iface_has_no_ssid" != "" ]
 	then
