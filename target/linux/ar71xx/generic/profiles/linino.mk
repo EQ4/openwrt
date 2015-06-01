@@ -101,20 +101,33 @@ endef
 
 $(eval $(call Profile,LININO_FREEDOG))
 
+# Linino Lei
 
-# Linino ChowChow
-
-define Profile/LININO_CHOWCHOW
-	NAME:=Linino Chowchow
+define Profile/LININO_LEI
+	NAME:=Linino Lei
 	PACKAGES:=kmod-usb-core kmod-usb2 luci-webpanel-linino linino-scripts linino-conf
 endef
 
-define Profile/LININO_CHOWCHOW/Description
+define Profile/LININO_LEI/Description
+	Package set optimized for the Linino Lei based on
+	Atheros AR9331.
+endef
+
+$(eval $(call Profile,LININO_LEI))
+
+# Linino Tian
+
+define Profile/LININO_TIAN
+	NAME:=Linino Tian
+	PACKAGES:=kmod-usb-core kmod-usb2 luci-webpanel-linino linino-scripts linino-conf
+endef
+
+define Profile/LININO_TIAN/Description
 	Package set optimized for the Linino Chowchow based on
 	Atheros AR9331.
 endef
 
-$(eval $(call Profile,LININO_CHOWCHOW))
+$(eval $(call Profile,LININO_TIAN))
 
 # Linino Chiwawa
 
