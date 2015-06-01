@@ -192,7 +192,8 @@ platform_check_image() {
 	zcn-1523h-5 | \
 	linino-yun-mini | \
 	linino-chiwawa | \
-	linino-chowchow | \
+	linino-lei | \
+	linino-tian | \
 	linino-one | \
 	linino-freedog | \
 	linino-yun)
