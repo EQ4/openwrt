@@ -237,4 +237,5 @@ static void __init chowchow_setup(void)
 	ds_register_spi();
 }
 
-MIPS_MACHINE(ATH79_MACH_LININO_CHOWCHOW, "linino-chowchow", "Linino ChowChow", chowchow_setup);
+MIPS_MACHINE(ATH79_MACH_LININO_LEI, "linino-lei", "Linino Lei", chowchow_setup);
+MIPS_MACHINE(ATH79_MACH_LININO_TIAN, "linino-tian", "Arduino Tian", chowchow_setup);
