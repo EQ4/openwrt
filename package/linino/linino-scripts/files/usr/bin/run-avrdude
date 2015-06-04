@@ -3,7 +3,7 @@
 boardname=$(awk '/machine/ {print tolower($4)}' /proc/cpuinfo)
 
 case $boardname in
-	'chowchow')
+	'lei')
 		GPIO=gpio15
 		PROGRAMMER=linuxgpio-chow;;
 	*)
@@ -14,7 +14,7 @@ esac
 OE_PATH=/sys/class/gpio/$GPIO/value
 OE_VALUE=$(cat $OE_PATH)
 
-if [ "$boardname" == "chowchow" ]; then
+if [ "$boardname" == "lei" ]; then
 	echo 0 > /sys/class/gpio/export
 	echo out > /sys/class/gpio/gpio0/direction
 	echo 1 > /sys/class/gpio/gpio0/value
