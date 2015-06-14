@@ -14,7 +14,7 @@ case $boardname in
                 ;;
 esac
 
-echo $ID
+# echo $ID
 
 sleep 1
 
@@ -35,7 +35,9 @@ $UCI add_list "dhcp.@dnsmasq[0].interface=lo,wlan0"
 
 # $UCI "add_list" "dhcp.@dnsmasq[0].address=/#/192.168.240.1"
 
-$UCI commit
+$UCI commit network
+$UCI commit wireless
+$UCI commit dhcp
 
 # /bin/sed -i "s/#C:192.168/C:192.168/g" /etc/httpd.conf
 

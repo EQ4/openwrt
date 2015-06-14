@@ -1,16 +1,16 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ajtcl-services
-PKG_VERSION:=14.12.x
+PKG_VERSION:=15.04
 PKG_RELEASE:=1
 PKG_MD5SUM:=
 
 # PKG_SOURCE_PROTO:=git
 # PKG_REVISION:=7b875c76cb29304f955c5b5a4bafb2194c6f779e
 
-PKG_SOURCE:=base_tcl-master.tar.gz
+PKG_SOURCE:=base_tcl-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://git.allseenalliance.org/cgit/services/base_tcl.git/snapshot/
-PKG_BUILD_DIR:=$(BUILD_DIR)/base_tcl-master
+PKG_BUILD_DIR:=$(BUILD_DIR)/base_tcl-$(PKG_VERSION)
 
 # PKG_SOURCE_VERSION:=$(PKG_REVISION)
 # PKG_SOURCE_URL:=https://git.allseenalliance.org/gerrit/services/base_tcl.git
