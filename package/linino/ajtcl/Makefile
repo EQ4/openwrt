@@ -13,7 +13,7 @@ PKG_MD5SUM:=
 # PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 
 # PKG_BUILD_DIR:=$(BUILD_DIR)/ajtcl-master
-PKG_SOURCE:=ajtcl-master.tar.gz
+PKG_SOURCE:=ajtcl-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://git.allseenalliance.org/cgit/core/ajtcl.git/snapshot/
 
 # SCons supports parallel builds but does not support make's jobserver
