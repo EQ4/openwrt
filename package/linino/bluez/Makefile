@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=bluez
-PKG_VERSION:=5.30
+PKG_VERSION:=5.31
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://www.kernel.org/pub/linux/bluetooth
-PKG_MD5SUM:=a7b99d40cd78c7497abdfd7f024fd07b
+PKG_MD5SUM:=ff617baf227f4838731c6b3e4715fc69
 
 PKG_BUILD_PARALLEL:=1
 PKG_FIXUP:=autoreconf
