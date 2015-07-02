@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2006-2014 OpenWrt.org
+# Copyright (C) 2006-2015 OpenWrt.org
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -9,104 +9,150 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=bluez
 PKG_VERSION:=5.31
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://www.kernel.org/pub/linux/bluetooth
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.xz
+PKG_SOURCE_URL:=http://www.kernel.org/pub/linux/bluetooth/
 PKG_MD5SUM:=ff617baf227f4838731c6b3e4715fc69
 
+PKG_LICENSE:=GPL-2.0+
+PKG_LICENSE_FILES:=COPYING
+PKG_MAINTAINER:=Nicolas Thill <nico@openwrt.org>
+
 PKG_BUILD_PARALLEL:=1
-PKG_FIXUP:=autoreconf
+PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/nls.mk
 
 define Package/bluez/Default
+  TITLE:=Bluetooth
   URL:=http://www.bluez.org/
 endef
 
-define Package/bluez-utils
+define Package/bluez-examples
 $(call Package/bluez/Default)
   SECTION:=utils
   CATEGORY:=Utilities
-  TITLE:=Bluetooth utilities
-  DEPENDS:=+bluez-libs +libncurses
+  TITLE+= python example apps
+  DEPENDS:=+python
+endef
+
+define Package/bluez-examples/description
+  contains many examples apps for bluetooth, requiring python
 endef
 
 define Package/bluez-libs
 $(call Package/bluez/Default)
   SECTION:=libs
   CATEGORY:=Libraries
-  TITLE:=Bluetooth libraries
-  DEPENDS:=+libpthread +libreadline +libncurses +libusb-1.0 +glib2 +dbus +udev $(INTL_DEPENDS) $(ICONV_DEPENDS)
+  TITLE+= library
+  DEPENDS:=+libpthread +kmod-bluetooth
 endef
 
-define Package/bluez-utils/conffiles
-/etc/dbus-1/system.d/bluetooth.conf
+define Package/bluez-utils
+$(call Package/bluez/Default)
+  SECTION:=utils
+  CATEGORY:=Utilities
+  TITLE+= utilities
+  DEPENDS:=+bluez-libs +libpthread +librt +glib2 +libncurses +libreadline $(INTL_DEPENDS) $(ICONV_DEPENDS)
+endef
+
+define Package/bluez-daemon
+$(call Package/bluez/Default)
+  SECTION:=utils
+  CATEGORY:=Utilities
+  TITLE+= daemon
+  DEPENDS:=+bluez-libs +bluez-utils +dbus +libical $(INTL_DEPENDS) $(ICONV_DEPENDS)
+endef
+
+define Package/bluez-daemon/conffiles
+/etc/bluetooth/main.conf
+/etc/bluetooth/network.conf
+/etc/bluetooth/input.conf
+/etc/bluetooth/proximity.conf
+/etc/config/bluetooth
 endef
 
 CONFIGURE_ARGS += \
-	--disable-systemd \
-	--disable-cups \
-	--disable-obex \
+	--enable-static \
+	--enable-shared \
 	--enable-client \
-	--enable-library \
-	--enable-tools \
+	--enable-datafiles \
 	--enable-experimental \
-	--enable-test \
-	--enable-sixaxis \
-	--enable-udev
-#--with-udevdir="$(STAGING_DIR)/lib/udev"
+	--enable-library \
+	--enable-monitor \
+	--enable-obex \
+	--enable-threads \
+	--enable-tools \
+	--disable-android \
+	--disable-cups \
+	--disable-manpages \
+	--disable-sixaxis \
+	--disable-systemd \
+	--disable-test \
+	--disable-udev \
 
-TARGET_CFLAGS += $(FPIC)
-
-define Build/Compile
-	$(MAKE) -C $(PKG_BUILD_DIR) \
-	LDFLAGS="$(TARGET_LDFLAGS) \
-	-L$(ICONV_PREFIX)/lib \
-	-L$(INTL_PREFIX)/lib -lm -lncurses" \
-	DESTDIR="$(PKG_INSTALL_DIR)" \
-	all install
-endef
+TARGET_CPPFLAGS += \
+	-D_GNU_SOURCE
 
 define Build/InstallDev
-	$(INSTALL_DIR) $(1)/usr/include/bluetooth
-	$(CP) $(PKG_INSTALL_DIR)/usr/include/bluetooth/*.h $(1)/usr/include/bluetooth
-	
+	$(INSTALL_DIR) $(1)/usr/include
+	$(CP) $(PKG_INSTALL_DIR)/usr/include/bluetooth $(1)/usr/include/
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/* $(1)/usr/lib/
-	
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libbluetooth.{a,so*} $(1)/usr/lib/
 	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/pkgconfig/bluez.pc $(1)/usr/lib/pkgconfig/
 endef
 
-define Package/bluez-utils/install
-	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/* $(1)/usr/bin/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/attrib/gatttool $(1)/usr/bin/
-
-	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/bluetooth/{bluetoothd,obexd} $(1)/usr/sbin
-
-	$(INSTALL_DIR) $(1)/etc/dbus-1/system.d
-	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/etc/dbus-1/system.d/bluetooth.conf $(1)/etc/dbus-1/system.d
-
-	$(INSTALL_DIR) $(1)/etc/init.d
-	$(INSTALL_BIN) ./files/bluetooth.init $(1)/etc/init.d/bluetooth
-	$(INSTALL_DIR) $(1)/etc/bluetooth
-	$(INSTALL_DATA) ./files/main.conf $(1)/etc/bluetooth
+define Package/bluez-examples/install
+	$(INSTALL_DIR) $(1)/usr/bin/bluez
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/test/* $(1)/usr/bin/bluez/
 endef
 
 define Package/bluez-libs/install
-	$(INSTALL_DIR) $(1)/usr/lib/
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/lib* $(1)/usr/lib/
-
-	$(INSTALL_DIR) $(1)/lib/udev/
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/lib/udev/hid2hci $(1)/lib/udev
-
-	$(INSTALL_DIR) $(1)/lib/udev/rules.d/
-	$(CP) $(PKG_INSTALL_DIR)/lib/udev/rules.d/* $(1)/lib/udev/rules.d/
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libbluetooth.so.* $(1)/usr/lib/
 endef
 
-$(eval $(call BuildPackage,bluez-utils))
+define Package/bluez-utils/install
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/bccmd $(1)/usr/bin/
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/bluemoon $(1)/usr/bin/
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/btmon $(1)/usr/bin/
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/ciptool $(1)/usr/bin/
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/hciattach $(1)/usr/bin/
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/hciconfig $(1)/usr/bin/
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/hcidump $(1)/usr/bin/
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/hcitool $(1)/usr/bin/
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/hex2hcd $(1)/usr/bin/
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/l2ping $(1)/usr/bin/
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/l2test $(1)/usr/bin/
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/rctest $(1)/usr/bin/
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/rfcomm $(1)/usr/bin/
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/sdptool $(1)/usr/bin/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/attrib/gatttool $(1)/usr/bin/
+endef
+
+define Package/bluez-daemon/install
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/bluetooth/bluetoothd $(1)/usr/bin/
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/bluetoothctl $(1)/usr/bin/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/bluetooth/obexd $(1)/usr/bin/
+	$(INSTALL_DIR) $(1)/etc/config
+	$(INSTALL_DATA) ./files/bluetooth.config $(1)/etc/config/bluetooth
+	$(INSTALL_DIR) $(1)/etc/dbus-1/system.d/
+	$(INSTALL_DATA) ./files/bluetooth.dbus $(1)/etc/dbus-1/system.d/bluetooth.conf
+	$(INSTALL_DIR) $(1)/etc/bluetooth
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/src/main.conf $(1)/etc/bluetooth/main.conf
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/profiles/network/network.conf $(1)/etc/bluetooth/network.conf
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/profiles/input/input.conf $(1)/etc/bluetooth/input.conf
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/profiles/proximity/proximity.conf $(1)/etc/bluetooth/proximity.conf
+	$(INSTALL_DIR) $(1)/etc/init.d
+	$(INSTALL_BIN) ./files/bluetoothd.init $(1)/etc/init.d/bluetoothd
+endef
+
+$(eval $(call BuildPackage,bluez-examples))
 $(eval $(call BuildPackage,bluez-libs))
+$(eval $(call BuildPackage,bluez-utils))
+$(eval $(call BuildPackage,bluez-daemon))
