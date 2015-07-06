@@ -41,7 +41,7 @@ ifdef CONFIG_USE_MKLIBS
 		--sysroot $(STAGING_DIR_ROOT) \
 		`cat $(TMP_DIR)/mklibs-libs | sed 's:/*[^/]\+/*$$::' | uniq | sed 's:^$(STAGING_DIR_ROOT):-L :'` \
 		--ldlib $(patsubst $(STAGING_DIR_ROOT)/%,/%,$(firstword $(wildcard \
-			$(foreach name,ld-uClibc.so.* ld-linux.so.* ld-*.so, \
+			$(foreach name,ld-uClibc.so.* ld-linux.so.* ld-*.so ld-musl-*.so.*, \
 			  $(STAGING_DIR_ROOT)/lib/$(name) \
 			)))) \
 		--target $(REAL_GNU_TARGET_NAME) \
@@ -111,6 +111,10 @@ $(curdir)/install: $(TMP_DIR)/.build
 		cd $(TARGET_DIR); \
 		for script in ./usr/lib/opkg/info/*.postinst; do \
 			IPKG_INSTROOT=$(TARGET_DIR) $$(which bash) $$script; \
+		done; \
+		for script in ./etc/init.d/*; do \
+			grep '#!/bin/sh /etc/rc.common' $$script >/dev/null || continue; \
+			IPKG_INSTROOT=$(TARGET_DIR) $$(which bash) ./etc/rc.common $$script enable; \
 		done || true \
 	)
 	@-find $(TARGET_DIR) -name CVS   | $(XARGS) rm -rf
