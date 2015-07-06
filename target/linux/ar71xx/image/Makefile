@@ -2069,8 +2069,8 @@ $(eval $(call SingleProfile,LininoLzma,64k,LININO_YUN,linino-yun,linino-yun,ttyA
 $(eval $(call SingleProfile,LininoLzma,64k,LININO_ONE,linino-one,linino-one,ttyATH0,115200,$$(linino_mtdlayout_16M),RKuImage))
 $(eval $(call SingleProfile,LininoLzma,64k,LININO_FREEDOG,linino-freedog,linino-freedog,ttyATH0,250000,$$(linino_mtdlayout_16M),RKuImage))
 $(eval $(call SingleProfile,LininoLzma,64k,LININO_CHIWAWA,linino-chiwawa,linino-chiwawa,ttyATH0,115200,$$(linino_mtdlayout_16M),RKuImage))
-$(eval $(call SingleProfile,LininoLzma,64k,LININO_LEI,linino-lei,linino-lei,ttyATH0,115200,$$(linino_mtdlayout_16M),RKuImage))
-$(eval $(call SingleProfile,LininoLzma,64k,LININO_TIAN,linino-tian,linino-tian,ttyATH0,115200,$$(linino_mtdlayout_16M),RKuImage))
+$(eval $(call SingleProfile,LininoLzma,64k,LININO_LEI,linino-lei,linino-lei,ttyS0,115200,$$(linino_mtdlayout_16M),RKuImage))
+$(eval $(call SingleProfile,LininoLzma,64k,LININO_TIAN,linino-tian,linino-tian,ttyS0,115200,$$(linino_mtdlayout_16M),RKuImage))
 $(eval $(call SingleProfile,LininoLzma,64k,LININO_YUN_MINI,linino-yun-mini,linino-yun-mini,ttyATH0,115200,$$(linino_mtdlayout_16M),RKuImage))
 
 # LININO_SINGLE_PROFILES is the list of all available Linino's profiles
