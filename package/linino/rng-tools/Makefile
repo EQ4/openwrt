@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2011 OpenWrt.org
+# Copyright (C) 2011-2015 OpenWrt.org
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -8,21 +8,24 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=rng-tools
-PKG_VERSION:=3
+PKG_VERSION:=5
 PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://downloads.sourceforge.net/project/gkernel/rng-tools/3/
-PKG_MD5SUM:=fa305916ec101c85c0065aeceb81a38d
+PKG_SOURCE_URL:=@SF/gkernel/rng-tools/$(PKG_VERSION)/
+PKG_MD5SUM:=6726cdc6fae1f5122463f24ae980dd68
+PKG_LICENSE:=GPLv2
+PKG_MAINTAINER:=Hannu Nyman <hannu.nyman@iki.fi>
 
 PKG_FIXUP:=autoreconf
+
+PKG_BUILD_DEPENDS:=USE_UCLIBC:argp-standalone USE_MUSL:argp-standalone
 
 include $(INCLUDE_DIR)/package.mk
 
 define Package/rng-tools
   SECTION:=utils
   CATEGORY:=Utilities
-  DEPENDS:=+USE_UCLIBC:argp-standalone
   TITLE:=Daemon for adding entropy to kernel entropy pool
   URL:=http://sourceforge.net/projects/gkernel/
 endef
@@ -31,6 +34,14 @@ ifdef CONFIG_USE_UCLIBC
 CONFIGURE_VARS += \
     LIBS="-largp"
 endif
+
+ifdef CONFIG_USE_MUSL
+CONFIGURE_VARS += \
+    LIBS="-largp"
+endif
+
+CONFIGURE_ARGS += \
+	--without-libgcrypt
 
 define Package/rng-tools/install
 	$(INSTALL_DIR) $(1)/etc/init.d
