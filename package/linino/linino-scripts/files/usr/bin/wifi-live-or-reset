@@ -14,9 +14,9 @@ iface_has_ssid=""
 iface_is_access_point=""
 
 update_vars() {
-	iface_exists=`/usr/sbin/iw $IFACE info`
-	iface_has_no_ssid=`/usr/sbin/iw $IFACE info | grep ssid\:off\/any`
-	iface_is_access_point=`/usr/sbin/iw $IFACE info | grep type\:AP`
+	iface_exists=`/usr/sbin/iwconfig $IFACE`
+	iface_has_no_ssid=`/usr/sbin/iwconfig $IFACE | grep ESSID\:off\/any`
+	iface_is_access_point=`/usr/sbin/iwconfig $IFACE | grep Mode\:Master`
 }
 
 wait_for_iface() {
@@ -45,7 +45,7 @@ do
 		wait_for_iface
 	elif [ "$iface_is_access_point" != "" ]
 	then
-		# blink-stop
+		blink-stop
 		exit 0
 	elif [ "$iface_has_no_ssid" != "" ]
 	then

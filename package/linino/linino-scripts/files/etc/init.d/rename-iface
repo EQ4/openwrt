@@ -30,8 +30,8 @@ start () {
 				$UCI "set" "wireless.@wifi-iface[1].network=lan"
 			fi
 
-			$UCI commit
-			$WIFI down
+			$UCI commit wireless
+			# $WIFI down
 			$WIFI up
 
 			echo "Changing WLAN card name" >> /dev/kmsg
