@@ -1,16 +1,16 @@
---- a/arch/mips/ath79/common.h	2015-05-07 00:09:35.000000000 +0200
-+++ b/arch/mips/ath79/common.h	2015-05-07 16:14:28.000000000 +0200
+--- a/arch/mips/ath79/common.h	2015-07-20 11:43:36.000000000 +0200
++++ b/arch/mips/ath79/common.h	2015-07-20 12:19:35.000000000 +0200
 @@ -27,6 +27,7 @@
  void ath79_gpio_function_enable(u32 mask);
  void ath79_gpio_function_disable(u32 mask);
  void ath79_gpio_function_setup(u32 set, u32 clear);
 +void ath79_gpio_function2_setup(u32 set, u32 clear);
  void ath79_gpio_output_select(unsigned gpio, u8 val);
+ int ath79_gpio_direction_select(unsigned gpio, bool oe);
  void ath79_gpio_init(void);
- 
---- a/arch/mips/ath79/gpio.c	2015-05-07 00:09:35.000000000 +0200
-+++ b/arch/mips/ath79/gpio.c	2015-05-07 16:51:17.000000000 +0200
-@@ -157,6 +157,35 @@
+--- a/arch/mips/ath79/gpio.c	2015-07-20 11:43:36.000000000 +0200
++++ b/arch/mips/ath79/gpio.c	2015-07-20 12:22:34.000000000 +0200
+@@ -193,6 +193,35 @@
  	return ath79_gpio_base + reg;
  }
  
@@ -46,10 +46,9 @@
  void ath79_gpio_function_setup(u32 set, u32 clear)
  {
  	void __iomem *reg = ath79_gpio_get_function_reg();
-
---- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h	2015-05-07 00:09:35.000000000 +0200
-+++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h	2015-05-07 16:29:22.000000000 +0200
-@@ -777,6 +777,7 @@
+--- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h	2015-07-20 11:43:36.000000000 +0200
++++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h	2015-07-20 12:27:12.000000000 +0200
+@@ -840,6 +840,7 @@
  #define AR71XX_GPIO_REG_INT_PENDING	0x20
  #define AR71XX_GPIO_REG_INT_ENABLE	0x24
  #define AR71XX_GPIO_REG_FUNC		0x28
@@ -57,7 +56,7 @@
  
  #define AR934X_GPIO_REG_OUT_FUNC0	0x2c
  #define AR934X_GPIO_REG_OUT_FUNC1	0x30
-@@ -887,6 +888,11 @@
+@@ -987,6 +988,11 @@
  #define AR933X_GPIO_FUNC_UART_EN		BIT(1)
  #define AR933X_GPIO_FUNC_JTAG_DISABLE		BIT(0)
  
