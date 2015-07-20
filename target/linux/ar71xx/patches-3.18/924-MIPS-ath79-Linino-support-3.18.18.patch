@@ -1,6 +1,6 @@
---- a/arch/mips/ath79/Kconfig	2015-05-07 00:09:35.000000000 +0200
-+++ b/arch/mips/ath79/Kconfig	2015-06-01 16:39:22.000000000 +0200
-@@ -1183,6 +1183,97 @@
+--- a/arch/mips/ath79/Kconfig	2015-07-20 11:43:36.000000000 +0200
++++ b/arch/mips/ath79/Kconfig	2015-07-20 12:04:28.000000000 +0200
+@@ -1293,6 +1293,97 @@
  	select ATH79_DEV_USB
  	select ATH79_NVRAM
  
@@ -98,10 +98,9 @@
  endmenu
  
  config SOC_AR71XX
-
---- a/arch/mips/ath79/machtypes.h	2015-05-07 00:09:35.000000000 +0200
-+++ b/arch/mips/ath79/machtypes.h	2015-06-01 16:38:22.000000000 +0200
-@@ -205,6 +205,13 @@
+--- a/arch/mips/ath79/machtypes.h	2015-07-20 11:43:36.000000000 +0200
++++ b/arch/mips/ath79/machtypes.h	2015-07-20 12:06:05.000000000 +0200
+@@ -216,6 +216,13 @@
  	ATH79_MACH_WZR_450HP2,		/* Buffalo WZR-450HP2 */
  	ATH79_MACH_ZCN_1523H_2,		/* Zcomax ZCN-1523H-2-xx */
  	ATH79_MACH_ZCN_1523H_5,		/* Zcomax ZCN-1523H-5-xx */
@@ -115,10 +114,9 @@
  };
  
  #endif /* _ATH79_MACHTYPE_H */
-
---- a/arch/mips/ath79/Makefile	2015-05-07 00:09:35.000000000 +0200
-+++ b/arch/mips/ath79/Makefile	2015-06-01 16:43:40.000000000 +0200
-@@ -77,6 +77,13 @@
+--- a/arch/mips/ath79/Makefile	2015-07-20 11:43:36.000000000 +0200
++++ b/arch/mips/ath79/Makefile	2015-07-20 12:07:38.000000000 +0200
+@@ -84,6 +84,13 @@
  obj-$(CONFIG_ATH79_MACH_JA76PF)		+= mach-ja76pf.o
  obj-$(CONFIG_ATH79_MACH_JWAP003)	+= mach-jwap003.o
  obj-$(CONFIG_ATH79_MACH_HORNET_UB)	+= mach-hornet-ub.o
@@ -126,9 +124,9 @@
 +obj-$(CONFIG_ATH79_MACH_LININO_ONE) += mach-linino-yun.o
 +obj-$(CONFIG_ATH79_MACH_LININO_FREEDOG) += mach-linino-freedog.o
 +obj-$(CONFIG_ATH79_MACH_LININO_LEI) += mach-linino-chowchow.o
-+obj-$(CONFIG_ATH79_MACH_LININO_TIAN) += mach-linino-chowchow.o
++obj-$(CONFIG_ATH79_MACH_LININO_TIAN) += mach-linino-tian.o
 +obj-$(CONFIG_ATH79_MACH_LININO_CHIWAWA) += mach-linino-chiwawa.o
 +obj-$(CONFIG_ATH79_MACH_LININO_YUN_MINI) += mach-linino-yun.o
  obj-$(CONFIG_ATH79_MACH_MC_MAC1200R)     += mach-mc-mac1200r.o
- obj-$(CONFIG_ATH79_MACH_MR600)		+= mach-mr600.o
- obj-$(CONFIG_ATH79_MACH_MR900)		+= mach-mr900.o
+ obj-$(CONFIG_ATH79_MACH_MR12)		+= mach-mr12.o
+ obj-$(CONFIG_ATH79_MACH_MR16)		+= mach-mr16.o
