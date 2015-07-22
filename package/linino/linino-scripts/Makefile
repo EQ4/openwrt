@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=linino-scripts
 PKG_VERSION:=1.2
-PKG_RELEASE:=4
+PKG_RELEASE:=5
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -54,6 +54,7 @@ define Package/linino-scripts/install
 	$(INSTALL_BIN) ./files/usr/bin/mcu-reset $(1)/usr/bin
 	$(INSTALL_BIN) ./files/usr/bin/tst $(1)/usr/bin
 	$(INSTALL_BIN) ./files/usr/bin/tsto $(1)/usr/bin
+	$(INSTALL_BIN) ./files/usr/bin/wifi-refresh $(1)/usr/bin
 
 	$(INSTALL_BIN) ./files/etc/init.d/rename-wifi-if-access-point $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/etc/init.d/generate_new_gpg_key $(1)/etc/init.d

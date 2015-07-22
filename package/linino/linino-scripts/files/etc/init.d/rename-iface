@@ -3,6 +3,7 @@
 
 UCI="/sbin/uci"
 WIFI="/sbin/wifi"
+FILE="/usr/lib/lua/luci/controller/linino/index.lua"
 
 START=17
 
@@ -30,9 +31,12 @@ start () {
 				$UCI "set" "wireless.@wifi-iface[1].network=lan"
 			fi
 
-			$UCI commit
-			$WIFI down
-			$WIFI up
+			$UCI commit wireless
+		
+			sed -i s/radio0/radio1/g $FILE			
+	
+			# $WIFI down
+			# $WIFI up
 
 			echo "Changing WLAN card name" >> /dev/kmsg
 			;;
