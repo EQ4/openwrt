@@ -38,15 +38,10 @@
 #define CHOWCHOW_GPIO_LED0		12
 #define CHOWCHOW_GPIO_LED1		11
 
-#ifdef LININO_TIAN
-#define TIAN_GPIO_SWDIO			13
-#define TIAN_GPIO_SWDCLK		14
-#else
-#define CHOWCHOW_GPIO_UART0_RX	13
-#define CHOWCHOW_GPIO_UART0_TX	14
-#endif
-#define CHOWCHOW_GPIO_UART1_RX	9
-#define CHOWCHOW_GPIO_UART1_TX	10
+#define CHOWCHOW_GPIO_UART0_RX	9
+#define CHOWCHOW_GPIO_UART0_TX	10
+#define CHOWCHOW_GPIO_UART1_RX	13
+#define CHOWCHOW_GPIO_UART1_TX	14
 #define CHOWCHOW_GPIO_OE2		15
 #define CHOWCHOW_GPIO_CONF_BTN	0
 #define CHOWCHOW_GPIO_UART_POL	GPIOF_OUT_INIT_LOW
@@ -55,9 +50,6 @@
 #define	CHOWCHOW_GPIO_SPI_MISO	3
 #define	CHOWCHOW_GPIO_SPI_MOSI	2
 #define CHOWCHOW_GPIO_SPI_CS0	1
-
-#define AR934X_GPIO_UART1_TD_OUT	79	/* table 2.16 */
-#define AR934X_GPIO_UART0_SOUT	24	/* table 2.16 */
 
 #define CHOWCHOW_GPIO_SPI_INTERRUPT	16
 #define DS_PCIE_CALDATA_OFFSET	0x5000
@@ -187,10 +179,7 @@ static void __init chowchow_setup(void)
 {
 	u8 *art = (u8 *) KSEG1ADDR(0x1fff0000);
 	static u8 mac[6];
-    int r;
-    void __iomem *reg;
-    unsigned v;
-
+	
 	/* make lan / wan leds software controllable */
 	ath79_gpio_output_select(CHOWCHOW_GPIO_LED0, AR934X_GPIO_OUT_GPIO);
 	ath79_gpio_output_select(CHOWCHOW_GPIO_LED1, AR934X_GPIO_OUT_GPIO);
@@ -202,60 +191,6 @@ static void __init chowchow_setup(void)
 	ath79_gpio_output_select(CHOWCHOW_GPIO_SPI_MISO, AR934X_GPIO_OUT_GPIO);
 	ath79_gpio_output_select(CHOWCHOW_GPIO_SPI_MOSI, AR934X_GPIO_OUT_GPIO);
 	ath79_gpio_output_select(CHOWCHOW_GPIO_MCU_RESET, AR934X_GPIO_OUT_GPIO);
-
-	/* UART1 (high-speed) configuration */
-	r = gpio_request(CHOWCHOW_GPIO_UART1_TX, NULL);
-	if (r) {
-		pr_err("gpio_request failed on gpio %d: %d\n",
-			CHOWCHOW_GPIO_UART1_TX, r);
-		return;
-	}
-	gpio_direction_output(CHOWCHOW_GPIO_UART1_TX, 0);
-	ath79_gpio_output_select(CHOWCHOW_GPIO_UART1_TX,
-				AR934X_GPIO_UART1_TD_OUT);
-	gpio_free(CHOWCHOW_GPIO_UART1_TX);
-
-	r = gpio_request(CHOWCHOW_GPIO_UART1_RX, NULL);
-	if (r) {
-		pr_err("gpio_request failed on gpio %d: %d\n",
-			CHOWCHOW_GPIO_UART1_RX, r);
-		return;
-	}
-	gpio_direction_input(CHOWCHOW_GPIO_UART1_RX);
-	gpio_free(CHOWCHOW_GPIO_UART1_TX);
-
-	/* Mux for UART1 input: UART1 multiplexing is GPIO_IN_ENABLE9, see
-	 * table 8-4 */
-	reg = ath79_gpio_base + AR934X_GPIO_IN_ENABLE9;
-	v = __raw_readl(reg);
-	v &= ~0x00ff0000;
-	v |= (CHOWCHOW_GPIO_UART1_RX << 16);
-	__raw_writel(v, reg);
-
-#ifdef LININO_TIAN
-	ath79_gpio_output_select(TIAN_GPIO_SWDIO, AR934X_GPIO_OUT_GPIO);
-	ath79_gpio_output_select(TIAN_GPIO_SWDCLK, AR934X_GPIO_OUT_GPIO);
-#else
-	/* UART0 (low-speed) configuration */
-	r = gpio_request(CHOWCHOW_GPIO_UART0_TX, NULL);
-	if (r) {
-		pr_err("gpio_request failed on gpio %d: %d\n",
-		       CHOWCHOW_GPIO_UART0_TX, r);
-		return;
-	}
-	gpio_direction_output(CHOWCHOW_GPIO_UART0_TX, 0);
-	ath79_gpio_output_select(CHOWCHOW_GPIO_UART0_TX,
-				   AR934X_GPIO_UART0_SOUT);
-	gpio_free(CHOWCHOW_GPIO_UART0_TX);
-
-	/* Mux for UART0 input: UART0 multiplexing is GPIO_IN_ENABLE1, see
-	 * table 8-4 */
-	reg = ath79_gpio_base + AR934X_GPIO_IN_ENABLE1;
-	v = __raw_readl(reg);
-	v &= ~0x0000ff00;
-	v |= (CHOWCHOW_GPIO_UART0_RX << 8);
-	__raw_writel(v, reg);
-#endif
 
 	ath79_register_m25p80(NULL);
 
@@ -271,7 +206,7 @@ static void __init chowchow_setup(void)
 	mac[3] |= 0x08;
 	ath79_register_wmac(art + DS_CALDATA_OFFSET, mac);
 	pr_info("%s-%d: wlan0 MAC:%02x:%02x:%02x:%02x:%02x:%02x\n", __FUNCTION__, __LINE__, mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
-
+	
 	mac[3] &= 0xF7;
 	pr_info("%s-%d: eth0  MAC:%02x:%02x:%02x:%02x:%02x:%02x\n", __FUNCTION__, __LINE__, mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
 	ap91_pci_init(art + DS_PCIE_CALDATA_OFFSET, mac);
@@ -294,10 +229,10 @@ static void __init chowchow_setup(void)
 	ath79_eth0_data.mii_bus_dev = &ath79_mdio0_device.dev;
 	ath79_eth0_pll_data.pll_1000 = 0x06000000;
 	ath79_register_eth(0);
-
+	
 	/* enable OE of level shifters */
 	ds_setup_level_shifter_oe();
-
+	
 	/* Register Software SPI controller */
 	ds_register_spi();
 }
