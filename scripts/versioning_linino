@@ -12,13 +12,17 @@ writeinfo () {
 	builddate=`date +"%Y-%m-%d"`
 	#gittag=`git describe --tags --abbrev=0`
 	
-	echo "DISTRIB_ID="\""LininoIO"\""" >> $LININOFILE
+	echo "DISTRIB_ID="\""LininoBLE"\""" >> $LININOFILE
 	echo "DISTRIB_RELEASE="\""$branchname"\""" >> $LININOFILE
 	echo "DISTRIB_REVISION="\""$gitcommit"\""" >> $LININOFILE
 	echo "DISTRIB_CODENAME="\""chaos_calmer"\""" >> $LININOFILE
 	echo "DISTRIB_TARGET="\""ar71xx/generic"\""" >> $LININOFILE
 	echo "BUILD_DATE="\""$builddate"\""" >> $LININOFILE
 	
+	sed -i /VERSION\_NUMBER/d .config
+	echo "CONFIG_VERSION_NUMBER="\""$gitcommit"\""" >> .config
+
+	# sed -i 's/CONFIG_VERSION_NUMBER="15.05-rc4"/CONFIG_VERSION_NUMBER='$gitcommit'/g' .config
 }
 
 if [ -e $LININOFILE ]
