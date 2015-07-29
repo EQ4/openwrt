@@ -3,32 +3,20 @@
 UCI="/sbin/uci"
 
 machine=$(awk '/machine/ {print $3}' /proc/cpuinfo)
-boardname=$(awk '/machine/ {print tolower($4)}' /proc/cpuinfo)
-
-case $boardname in
-        'lei'|'tian')
-                ID=1
-                ;;
-        *)
-                ID=0
-                ;;
-esac
-
-# echo $ID
 
 sleep 1
 
-$UCI "set" "wireless.radio$ID.channel=auto"
-$UCI "set" "wireless.@wifi-iface[$ID].mode=ap"
-$UCI "set" "wireless.@wifi-iface[$ID].ssid=$machine"
-$UCI "set" "wireless.@wifi-iface[$ID].encryption=none"
+$UCI "set" "wireless.radio0.channel=auto"
+$UCI "set" "wireless.@wifi-iface[0].mode=ap"
+$UCI "set" "wireless.@wifi-iface[0].ssid=$machine"
+$UCI "set" "wireless.@wifi-iface[0].encryption=none"
 
 if ! `iw wlan0 info | grep -qs AP`
 then
-	$UCI "delete" "wireless.@wifi-iface[$ID].key"
+	$UCI "delete" "wireless.@wifi-iface[0].key"
 fi
 
-$UCI "delete" "wireless.radio$ID.country"
+$UCI "delete" "wireless.radio0.country"
 
 $UCI "set" "network.lan.ipaddr=192.168.240.1"
 $UCI "set" "network.lan.netmask=255.255.255.0"
