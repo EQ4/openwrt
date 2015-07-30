@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=linino-conf
 PKG_VERSION:=1.0
-PKG_RELEASE:=5
+PKG_RELEASE:=6
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -62,7 +62,6 @@ define Package/linino-conf/install
 	# /etc/config DIR
 	# $(INSTALL_CONF) ./files/etc/config/arduino $(1)/etc/config/
 	$(INSTALL_CONF) ./files/etc/config/firewall $(1)/etc/config/
-	$(INSTALL_CONF) ./files/etc/config/network $(1)/etc/config/
 	$(INSTALL_CONF) ./files/etc/config/system $(1)/etc/config/
 	$(INSTALL_CONF) ./files/etc/config/uhttpd $(1)/etc/config/
 	
