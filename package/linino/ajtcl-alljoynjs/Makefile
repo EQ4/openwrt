@@ -1,21 +1,21 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ajtcl-alljoynjs
-PKG_VERSION:=15.04.x
+PKG_VERSION:=RB15.04
 PKG_RELEASE:=1
 
 # PKG_REVISION:=992638d3cddff3ec4783c25e946833063b94bffd
-PKG_REVISION:=278a95181254f65fd9191a2d6c3d5fc3ed6dc8d2
+# PKG_REVISION:=278a95181254f65fd9191a2d6c3d5fc3ed6dc8d2
 # PKG_SOURCE_PROTO:=git
 
-PKG_SOURCE:=alljoyn-js-$(PKG_REVISION).tar.gz
+PKG_SOURCE:=alljoyn-js-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://git.allseenalliance.org/cgit/core/alljoyn-js.git/snapshot/
 
 # PKG_SOURCE_VERSION:=$(PKG_REVISION)
 # PKG_SOURCE_URL:=https://git.allseenalliance.org/gerrit/core/alljoyn-js.git
 # PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 
-PKG_BUILD_DIR:=$(BUILD_DIR)/alljoyn-js-$(PKG_REVISION)
+PKG_BUILD_DIR:=$(BUILD_DIR)/alljoyn-js-$(PKG_VERSION)
 
 # SCons supports parallel builds but does not support make's jobserver
 PKG_BUILD_PARALLEL:=$(if $(CONFIG_PKG_BUILD_USE_JOBSERVER),0,1)
@@ -63,6 +63,7 @@ define Build/Configure/Default
 endef
 
 define Build/Compile
+	YUN_BUILD=0 \
 	CROSS_CFLAGS="-I$(STAGING_DIR)/usr/src/duktape/src -I$(STAGING_DIR)/usr/include/ajtcl $(TARGET_CFLAGS) $(EXTRA_CFLAGS) $(TARGET_CPPFLAGS)" \
 	CROSS_LINKFLAGS="$(TARGET_LINKFLAGS) $(TARGET_LDFLAGS) -lajtcl_services" \
 	CROSS_PATH=$(TARGET_PATH) \
