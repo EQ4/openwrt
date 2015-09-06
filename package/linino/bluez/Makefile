@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=bluez
-PKG_VERSION:=5.32
-PKG_RELEASE:=2
+PKG_VERSION:=5.34
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.xz
-PKG_SOURCE_URL:=http://www.kernel.org/pub/linux/bluetooth/
-PKG_MD5SUM:=432b1f292c0b78771818c67140baf3d9
+PKG_SOURCE_URL:=@KERNEL/linux/bluetooth/
+PKG_MD5SUM:=68581ef1c5e3e5bcec9c57a2d3c57495
 
 PKG_LICENSE:=GPL-2.0+
 PKG_LICENSE_FILES:=COPYING
@@ -120,6 +120,7 @@ define Package/bluez-utils/install
 	$(CP) $(PKG_INSTALL_DIR)/usr/bin/bccmd $(1)/usr/bin/
 	$(CP) $(PKG_INSTALL_DIR)/usr/bin/bluemoon $(1)/usr/bin/
 	$(CP) $(PKG_INSTALL_DIR)/usr/bin/btmon $(1)/usr/bin/
+	$(CP) $(PKG_BUILD_DIR)/tools/btmgmt $(1)/usr/bin/
 	$(CP) $(PKG_INSTALL_DIR)/usr/bin/ciptool $(1)/usr/bin/
 	$(CP) $(PKG_INSTALL_DIR)/usr/bin/hciattach $(1)/usr/bin/
 	$(CP) $(PKG_INSTALL_DIR)/usr/bin/hciconfig $(1)/usr/bin/

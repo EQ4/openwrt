@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NPM_NAME:=alljoyn
 PKG_NAME:=node-$(PKG_NPM_NAME)
-PKG_VERSION:=0.1.4
+PKG_VERSION:=1.0.0
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NPM_NAME)-$(PKG_VERSION).tgz
@@ -52,7 +52,7 @@ define Build/Compile
 	npm_config_arch=mips \
 	npm_config_nodedir=$(BUILD_DIR)/node-v$(PKG_NODE_VERSION)/ \
 	PREFIX="$(PKG_INSTALL_DIR)/usr/" \
-	npm install --target_arch=mips -g $(PKG_BUILD_DIR)
+	npm install --build-from-source --target_arch=mips -g $(PKG_BUILD_DIR)
 endef
 
 define Package/node-alljoyn/install
