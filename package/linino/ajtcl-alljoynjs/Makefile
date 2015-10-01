@@ -4,12 +4,15 @@ PKG_NAME:=ajtcl-alljoynjs
 PKG_VERSION:=15.04
 PKG_RELEASE:=1
 
-# PKG_REVISION:=992638d3cddff3ec4783c25e946833063b94bffd
-# PKG_REVISION:=278a95181254f65fd9191a2d6c3d5fc3ed6dc8d2
+# PKG_REVISION:=ab5afcfded9d723714528075e5895eed9ffd1983 # (17 Jun 2015)
+# PKG_REVISION:=1303a77588209808d682faf7fb5ff14bf8088a40 # (31 Aug 2015)
+
 # PKG_SOURCE_PROTO:=git
 
 PKG_SOURCE:=alljoyn-js-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://git.allseenalliance.org/cgit/core/alljoyn-js.git/snapshot/
+
+PKG_MD5SUM:=276767da532bf845ca014c7a5d8f7885
 
 # PKG_SOURCE_VERSION:=$(PKG_REVISION)
 # PKG_SOURCE_URL:=https://git.allseenalliance.org/gerrit/core/alljoyn-js.git
