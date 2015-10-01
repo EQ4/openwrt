@@ -1039,9 +1039,13 @@ define CompressLzma
   $(STAGING_DIR_HOST)/bin/lzma e $(1) -lc1 -lp2 -pb2 $(3) $(2)
 endef
 
+# Here we tweak the file when disabling the CMDLINE_HACK
+
 define PatchKernel
 	cp $(KDIR)/vmlinux$(3) $(KDIR_TMP)/vmlinux$(3)-$(1)
+ifneq ($(CONFIG_IMAGE_CMDLINE_HACK),)
 	$(STAGING_DIR_HOST)/bin/patch-cmdline $(KDIR_TMP)/vmlinux$(3)-$(1) "$(strip $(2))"
+endif
 endef
 
 define PatchKernel/initramfs
@@ -1053,15 +1057,23 @@ endef
 # $(2): kernel command line.
 # $(3): extra argumetns for lzma.
 # $(4): name suffix, e.g. "-initramfs".
+
+# Here we tweak the file when disabling the CMDLINE_HACK
+
 define PatchKernelLzma
 	cp $(KDIR)/vmlinux$(4) $(KDIR_TMP)/vmlinux$(4)-$(1)
+ifneq ($(CONFIG_IMAGE_CMDLINE_HACK),)
 	$(STAGING_DIR_HOST)/bin/patch-cmdline $(KDIR_TMP)/vmlinux$(4)-$(1) "$(strip $(2))"
+endif
 	$(call CompressLzma,$(KDIR_TMP)/vmlinux$(4)-$(1),$(KDIR_TMP)/vmlinux$(4)-$(1).bin.lzma,$(3))
 endef
 
 define PatchKernelGzip
 	cp $(KDIR)/vmlinux$(3) $(KDIR_TMP)/vmlinux$(3)-$(1)
+ifneq ($(CONFIG_IMAGE_CMDLINE_HACK),)
 	$(STAGING_DIR_HOST)/bin/patch-cmdline $(KDIR_TMP)/vmlinux$(3)-$(1) "$(strip $(2))"
+	gzip -9n -c $(KDIR_TMP)/vmlinux$(3)-$(1) > $(KDIR_TMP)/vmlinux$(3)-$(1).bin.gz
+endif
 	gzip -9n -c $(KDIR_TMP)/vmlinux$(3)-$(1) > $(KDIR_TMP)/vmlinux$(3)-$(1).bin.gz
 endef
 
