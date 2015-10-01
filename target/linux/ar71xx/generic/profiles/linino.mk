@@ -38,20 +38,20 @@ endef
 
 $(eval $(call Profile,LININO_YUNONE))
 
-# Linino YunOneChow
+# Linino YunOneLei
 
-define Profile/LININO_YUNONECHOW
+define Profile/LININO_YUNONELEI
 	NAME:=Linino YunOneChow
 	PACKAGES:=kmod-usb-core kmod-usb-ohci kmod-usb2 kmod-ledtrig-usbdev kmod-usb-storage \
 		kmod-fs-vfat kmod-fs-msdos kmod-fs-ntfs kmod-fs-ext4 linino-scripts linino-conf \
 		kmod-nls-cp437 kmod-nls-cp850 kmod-nls-cp852 kmod-nls-iso8859-1 kmod-nls-utf8
 endef
 
-define Profile/LININO_YUNONECHOW/Description
+define Profile/LININO_YUNONELEI/Description
 	Select this in order to build an image for Arduino Yun and Linino One
 endef
 
-$(eval $(call Profile,LININO_YUNONECHOW))
+$(eval $(call Profile,LININO_YUNONELEI))
 
 # ###########################
 #							#
