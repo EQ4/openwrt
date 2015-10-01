@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ajtcl-alljoynjs
-PKG_VERSION:=RB15.04
+PKG_VERSION:=15.04
 PKG_RELEASE:=1
 
 # PKG_REVISION:=992638d3cddff3ec4783c25e946833063b94bffd
