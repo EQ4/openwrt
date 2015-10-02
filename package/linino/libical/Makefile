@@ -13,6 +13,7 @@ PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=@SF/freeassociation/
+PKG_MD5SUM:=d26a58149aaae9915fa79fb35c8de6fc
 
 PKG_INSTALL:=1
 
@@ -44,9 +45,8 @@ endef
 
 CMAKE_OPTIONS = \
         -DCMAKE_PREFIX=/usr \
-		-DCMAKE_BUILD_TYPE=Release
-		
-# -DSHARED_ONLY=yes		
+		-DCMAKE_BUILD_TYPE=Release \
+		-DSHARED_ONLY=no		
 
 define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/include
@@ -62,5 +62,4 @@ define Package/libical/install
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libical{,ss,vcal}.so.* $(1)/usr/lib/
 endef
 
-$(eval $(call HostBuild))
 $(eval $(call BuildPackage,libical))
